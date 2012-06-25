@@ -40,14 +40,14 @@ bool doesNotContain (top root,unsigned int x)
 void outPutAll(vector<unsigned int> frame)
 {
   // check to see if it is junk first
-  if (!(frame[3] == frame[1] && frame[6] == frame[2] && frame[1] == frame[3] && frame[7] == frame[5] && frame[6] == frame[2]))
-    {
+  //  if (!(frame[3] == frame[1] && frame[6] == frame[2] && frame[1] == frame[3] && frame[7] == frame[5] && frame[6] == frame[2]))
+   {
       for (unsigned int i=0;i<frame.size();i++)
         {
-          // cout << frame[i] <<endl; // this is not a "pretty print" it
+           cout << frame[i] <<endl; // this is not a "pretty print" it
           // outputs it for processing later
         }
-    }
+       }
 }
 
 void getNext(vector <unsigned int> & frame, vector<unsigned int> children, top root,bool & gotNext,unsigned int & i, unsigned int framePos)
@@ -230,7 +230,7 @@ void getNextFrame (unsigned int current,vector <unsigned int> & frame,tops & tre
 void load (tops & trees)
 {
   typedef pair <string,unsigned int> stringInt; // this is a dictionary entry
-  fstream in; in.open ("test.txt",fstream::in); // open the stream
+  fstream in; in.open ("test2.txt",fstream::in); // open the stream
   string one,two,three,oneNew,twoNew,threeNew; // incoming strings
   unsigned int oneInt,twoInt,threeInt; // ints for the strings
   map <string,unsigned int>  dictionary; // keeps the numbers of the strings
@@ -347,17 +347,17 @@ int main()
     //    cout << "before getNextFrame" <<endl;
     while (!end(current,trees,mainCoordinates,sweepCoordinates))
       {
-         cout << "Main : (" <<  mainCoordinates.first << "," <<
-         mainCoordinates.second << ") " << "sweep: (" <<
-         sweepCoordinates.first << "," << sweepCoordinates.second <<
-         ")" << endl;
+        //   cout << "Main : (" <<  mainCoordinates.first << "," <<
+        //   mainCoordinates.second << ") " << "sweep: (" <<
+        //   sweepCoordinates.first << "," << sweepCoordinates.second <<
+        //   ")" << endl;
 
-        cout << trees[current][sweepCoordinates.first].second[sweepCoordinates.second]<<endl;
+         //  cout << trees[current][sweepCoordinates.first].second[sweepCoordinates.second]<<endl;
         
         top root = trees[current];
-        cout << root[root.size()-1].second[root[root.size()-1].second.size()-1]<<endl;
-        cout << root.size()<<endl;
-        cout << root[root.size()-1].second.size()<<endl;
+        //   cout << root[root.size()-1].second[root[root.size()-1].second.size()-1]<<endl;
+        //    cout << "# of branches: " << root.size()<<endl;
+        //    cout << "# of leaves: " << root[root.size()-1].second.size()<<endl;
 
         // This will place the correct ints into frame
         getNextFrame (current,frame,trees,mainCoordinates,sweepCoordinates);
@@ -395,18 +395,18 @@ int main()
             //  cout << gotNextE <<endl;
             if (gotNextE) // there is a good e value
               {
-                //      cout << "gotNextE" <<endl;
+                      cout << "one" <<endl;
                 // Here is the stuff getting ready to call getNextF.
                 // first, the two important roots must be found
                 top rootD = trees[frame[3]];
                 top rootC = trees[frame[2]];
-
+                cout << "two"<<endl;
                 // Now all of the children of de need to be put into
                 // the children vector.
                 children.clear();
                 i=0;
                 unsigned int iterF=0;
-
+                cout << "three" <<endl;
                 // first it is necessary to find the correct child of
                 // rootD (the e value)
                 unsigned int k = 0;
@@ -415,30 +415,33 @@ int main()
                   {
                     k++;
                   }
+                cout <<"four" <<endl;
                 while (i<rootD[k].second.size())
                   {
                     children.push_back(rootD[k].second[i]);
                     i++;
                   }
+                cout << "five" <<endl;
                 //    cout << "after" <<endl;
                 bool gotNextF = true;
                 while (gotNextF)
                   {
+                    cout <<"six" <<endl;
                     getNext(frame,children,rootC,gotNextF,iterF,5);
-                  
+                    cout << "seven" <<endl;
                     
                     if (gotNextF) // there is a good f value
                       {
                         // now we have to find h, the child of be and
                         // g
-
+                        cout <<"eight" <<endl;
                         top rootB = trees[frame[1]];
                         top rootG = trees[frame[6]];
-
+                        cout << "9" <<endl;
                         children.clear();
                         i=0;
                         unsigned int iterH=0;
-
+                        cout << "10" <<endl;
                         // first it is necessary to find the correct child of
                         // rootB (the e value)
                         unsigned int k = 0;
@@ -446,19 +449,19 @@ int main()
                           {
                             k++;
                           }
-
+                        cout << "11" <<endl;
                         // load the vector of children of be
                         while (i<rootD[k].second.size())
                           {
                             children.push_back(rootD[k].second[i]);
                             i++;
                           }
-
+                        cout << "12" <<endl;
                         bool gotNextH = true;
                         while (gotNextH)
                           {
                             getNext (frame,children,rootG,gotNextH,iterH,7);
-                            
+                            cout << "13" <<endl;
                             if (gotNextH) // there is a good H value
                               {
                                 // we can just reuse rootG and rootC
@@ -466,15 +469,17 @@ int main()
                                 children.clear();
                                 i=0;
                                unsigned int iterI=0;
-                                
+                               cout << "14" <<endl;
                                 // first it is necessary to find the correct child of
                                 // rootC (the f value)
                                unsigned int k = 0;
                                 while (rootC[k].first != frame[5])
                                   {
+                                    cout <<rootC.size()<<endl;
+                                    //  cout << rootC.size()-1<<endl << k;
                                     k++;
                                   }
-
+                                cout << "15" <<endl;
                                 
                                 // load the vector of children of cf
                                 while (i<rootC[k].second.size())
@@ -483,7 +488,7 @@ int main()
                                     i++;
                                   }
 
-
+                                cout << "16" <<endl;
                                 bool gotNextI = true;
                                 while (gotNextI)
                                   {
@@ -492,8 +497,9 @@ int main()
                                     if (gotNextI) // there is a good
                                                   // value for i
                                       {
-										 
+                                        cout << "center" <<endl;
                                         outPutAll(frame);
+                                        
                                       }
                                   }
                               }
