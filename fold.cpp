@@ -466,6 +466,8 @@ int main()
                               {
                                 // we can just reuse rootG and rootC
                                 // here
+								  top rootG = trees[frame[6]];
+								  top rootC = trees[frame[2]];
                                 children.clear();
                                 i=0;
                                unsigned int iterI=0;
@@ -473,9 +475,13 @@ int main()
                                 // first it is necessary to find the correct child of
                                 // rootC (the f value)
                                unsigned int k = 0;
+                               //  cout <<k<<endl;
+                               cout <<"f " << frame[5] <<endl;
                                 while (rootC[k].first != frame[5])
                                   {
-                                    cout <<rootC.size()<<endl;
+                                    cout <<"f " << frame[5] <<endl;
+                                    cout << "guess " << rootC[k].first <<endl;
+                                    // cout <<rootC.size()<<endl;
                                     //  cout << rootC.size()-1<<endl << k;
                                     k++;
                                   }
