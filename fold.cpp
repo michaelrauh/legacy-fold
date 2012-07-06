@@ -8,6 +8,9 @@
 //  cout << (float) i /321135634 << '\r' << '\b'; // progress overwite
 //  percentage thingy
 
+// new load pattern: keep track oneBack and twoBack. put word as
+// branch on onBack, and as leaf on twoBack[oneBack]
+
 
 
 using namespace std;
@@ -91,26 +94,16 @@ void iterateCoordinates (top & root,pair <unsigned int, unsigned int> & mainCoor
 
 void loadDictionary(tops & trees,map <string,unsigned int> & dictionary)
 {
-  string one,two,three;
+  string word;
   typedef pair <string,unsigned int> stringInt; // this is a dictionary entry
-  fstream vocab; vocab.open ("minimal.txt",fstream::in); // open the stream
+  fstream vocab; vocab.open ("huge.txt",fstream::in); // open the stream
   while (!vocab.eof())
     { 
-      vocab >> one;
-      vocab >> two;
-      vocab >> three;
+      vocab >> word;
       
-      if (dictionary.count (one) == 0)
+      if (dictionary.count (word) == 0)
         {
-          dictionary.insert (stringInt (one,dictionary.size()));
-        }
-      if (dictionary.count (two) == 0)
-        {
-          dictionary.insert (stringInt (two,dictionary.size()));
-        }
-      if (dictionary.count (three) == 0)
-        {
-          dictionary.insert (stringInt (three,dictionary.size()));
+          dictionary.insert (stringInt (word,dictionary.size()));
         }
     }
 }
@@ -241,8 +234,8 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
  void load (tops & trees,  map <unsigned int,string> &  reverseDictionary)
 {
   //cout << "load1" <<endl;
-  fstream in; in.open ("minimal.txt",fstream::in); // open the stream
-  string one,two,three; // incoming strings
+  fstream in; in.open ("huge.txt",fstream::in); // open the stream
+  string word,oneBack,twoBack; // incoming strings
   map <string,unsigned int>  dictionary; // keeps the numbers of the strings
   // unsigned int oneInt,twoInt,threeInt; // ints for the strings
   
@@ -257,39 +250,56 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
       top dummy;
       trees[temp] = dummy;
     }
+	
+	in >> twoBack;
+	in >> oneBack;
+	
+	// twoBack doens't go anywhere: it is only a root. 
+	// oneBack goes on twoBack
+	
+	intVectorPair firstBranch;
+	firstBranch.first = dictionary[oneBack];
+	trees[dictionary[twoBack]].push_back (firstBranch);
+	
+	// now every word taken in goes both as a branch and as a leaf
 
-   while (!in.eof()) // eof isn't working: taking in one too many times 
+   while (!in.eof())
     {
-      in >> one;
-      in >> two;
-      in >> three;
+		unsigned int i=0;
+      in >> word;
+	
 
-      bool justPlaced = false;
-      if (doesNotContain (trees[dictionary[one]],dictionary[two]))
+		// if the new word is not already a branch on the root that is two back
+      if (doesNotContain (trees[dictionary[twoBack]],dictionary[word]))
         {
-          //    cout << "doesNotContain: " <<one << " " <<two<<endl;
-          intVectorPair branch;
-          branch.first = dictionary[two];
-          trees[dictionary[one]].push_back (branch);
-          justPlaced = true;
-        }
-   
-      if (justPlaced)
-        {
-          trees[dictionary[one]][trees[dictionary[one]].size()-1].second.push_back (dictionary[three]);
-        }
-      else
-        {
-          //we don't know where the branch is. We have to find it.
-          unsigned int i = 0;
-          
-          while (trees[dictionary[one]][i].first != dictionary[two])
-            {
-              i++;
-            }
-          trees[dictionary[one]][i].second.push_back(dictionary[three]);
-        }
+		  intVectorPair branch;
+          branch.first = dictionary[word];
+          trees[dictionary[twoBack]].push_back (branch);
+		}
+			
+		// now the word needs to be placed as a leaf on twoBack[oneBack]
+		while (trees[dictionary[twoBack]][i].first != dictionary[oneBack])
+		{
+		i++;
+		}
+		
+		// check to see if it already has that leaf by searching the branch.
+		unsigned int k=0;
+		while (k < trees[dictionary[twoBack]][i].second.size() && trees[dictionary[twoBack]][i].second[k] != dictionary[word])
+		{
+			k++;	
+		}
+		
+		// if it wasn't already defined
+		if (k == trees[dictionary[twoBack]][i].second.size())
+		{
+			trees[dictionary[twoBack]][i].second.push_back (dictionary[word]);
+		}
     }
+	
+	
+	
+	
   // now that trees is loaded, make the reverse dictionary
  reverseEntries (dictionary,reverseDictionary);
 }
@@ -320,14 +330,15 @@ int main()
       unsigned int max = maximum (root);
       //  cout <<" max " <<max<<endl;
       bool ranBefore = false;
-      //  cout << "max: " <<max<<endl;
+      // cout << "max: " <<max<<endl;
+      cout << "root: "<<reverseDictionary [current]<<endl;
       for (unsigned int pos = 0;pos < max; pos++)
         { 
           getNextFrame (current,root,frame,mainCoordinates,sweepCoordinates,ranBefore);/////////////////////////////////////////////
               
 
-           cout << "main: (" << mainCoordinates.first <<"," <<mainCoordinates.second <<")" << "  ";
-           cout << "sweep: (" <<sweepCoordinates.first << "," <<sweepCoordinates.second <<")" << endl;
+          //   cout << "main: (" << mainCoordinates.first <<"," <<mainCoordinates.second <<")" << "  ";
+          //   cout << "sweep: (" <<sweepCoordinates.first << "," <<sweepCoordinates.second <<")" << endl;
                   //   outPutAll (frame,reverseDictionary);
 
           ///////////preparing to get
