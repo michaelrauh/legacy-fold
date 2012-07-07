@@ -257,17 +257,30 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
   // oneBack is a branch on twoBack.
   intVectorPair temp;
   temp.first = dictionary[oneBack];
+  temp.second.clear();
   trees[dictionary[twoBack]].push_back(temp);
 
   // now to construct the data structure
   while (!in.eof())
     {
       in >> word;
+      // place the new word onto the correct root
+      if (doesNotContain (trees[dictionary[twoBack]],dictionary[word]))
+        {
+          intVectorPair branch;
+          branch.first = dictionary[word];
+          branch.second.clear();
+          trees[dictionary[twoBack]].push_back (branch);
+        }
+      
+
+      // place the new word onto the correct branch
+
+      // update the values to ensure that we are ready for the next
+      // word.
+      twoBack = oneBack;
+      oneBack = word;
     }
-
-
-
-
   // now that trees is loaded, make the reverse dictionary
   reverseEntries (dictionary,reverseDictionary);
 }
@@ -315,7 +328,7 @@ int main()
       //  cout <<" max " <<max<<endl;
       bool ranBefore = false;
       // cout << "max: " <<max<<endl;
-      cout << "root: "<<reverseDictionary [current]<<endl;
+      //  cout << "root: "<<reverseDictionary [current]<<endl;
       for (unsigned int pos = 0;pos < max; pos++)
         { 
           getNextFrame (current,root,frame,mainCoordinates,sweepCoordinates,ranBefore);/////////////////////////////////////////////
