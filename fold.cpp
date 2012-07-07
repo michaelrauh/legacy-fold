@@ -250,12 +250,19 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
       top dummy;
       trees[temp] = dummy;
     }
-	
+
+  in >> twoBack;
+  in >> oneBack;
+	// twoBack is the first word, and is therefore only a root.
+  // oneBack is a branch on twoBack.
+  intVectorPair temp;
+  temp.first = dictionary[oneBack];
+  trees[dictionary[twoBack]].push_back(temp);
+
   // now to construct the data structure
   while (!in.eof())
     {
       in >> word;
-      cout << dictionary [word]<<endl;
     }
 
 
@@ -281,10 +288,10 @@ int main()
       cout << "root: " <<reverseDictionary[temp]<<endl;
       for (iter1=0;iter1<tempRoot.size();iter1++)
         {
-          cout <<endl << "branch: " <<reverseDictionary[tempRoot[iter1].first] <<endl;
+          cout <<"\t" << "branch: " <<reverseDictionary[tempRoot[iter1].first] <<endl;
           for (iter2=0;iter2<tempRoot[iter1].second.size();iter2++)
             {
-              cout<<endl <<"leaf: "<<reverseDictionary[tempRoot[iter1].second[iter2]]<<endl;
+              cout<<"\t\t" <<"leaf: "<<reverseDictionary[tempRoot[iter1].second[iter2]]<<endl;
             }
         }
     }
