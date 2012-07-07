@@ -96,7 +96,7 @@ void loadDictionary(tops & trees,map <string,unsigned int> & dictionary)
 {
   string word;
   typedef pair <string,unsigned int> stringInt; // this is a dictionary entry
-  fstream vocab; vocab.open ("huge.txt",fstream::in); // open the stream
+  fstream vocab; vocab.open ("input.txt",fstream::in); // open the stream
   while (!vocab.eof())
     { 
       vocab >> word;
@@ -234,7 +234,7 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
  void load (tops & trees,  map <unsigned int,string> &  reverseDictionary)
 {
   //cout << "load1" <<endl;
-  fstream in; in.open ("huge.txt",fstream::in); // open the stream
+  fstream in; in.open ("input.txt",fstream::in); // open the stream
   string word,oneBack,twoBack; // incoming strings
   map <string,unsigned int>  dictionary; // keeps the numbers of the strings
   // unsigned int oneInt,twoInt,threeInt; // ints for the strings
@@ -251,57 +251,18 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
       trees[temp] = dummy;
     }
 	
-	in >> twoBack;
-	in >> oneBack;
-	
-	// twoBack doens't go anywhere: it is only a root. 
-	// oneBack goes on twoBack
-	
-	intVectorPair firstBranch;
-	firstBranch.first = dictionary[oneBack];
-	trees[dictionary[twoBack]].push_back (firstBranch);
-	
-	// now every word taken in goes both as a branch and as a leaf
-
-   while (!in.eof())
+  // now to construct the data structure
+  while (!in.eof())
     {
-		unsigned int i=0;
       in >> word;
-	
-
-		// if the new word is not already a branch on the root that is two back
-      if (doesNotContain (trees[dictionary[twoBack]],dictionary[word]))
-        {
-		  intVectorPair branch;
-          branch.first = dictionary[word];
-          trees[dictionary[twoBack]].push_back (branch);
-		}
-			
-		// now the word needs to be placed as a leaf on twoBack[oneBack]
-		while (trees[dictionary[twoBack]][i].first != dictionary[oneBack])
-		{
-		i++;
-		}
-		
-		// check to see if it already has that leaf by searching the branch.
-		unsigned int k=0;
-		while (k < trees[dictionary[twoBack]][i].second.size() && trees[dictionary[twoBack]][i].second[k] != dictionary[word])
-		{
-			k++;	
-		}
-		
-		// if it wasn't already defined
-		if (k == trees[dictionary[twoBack]][i].second.size())
-		{
-			trees[dictionary[twoBack]][i].second.push_back (dictionary[word]);
-		}
+      cout << dictionary [word]<<endl;
     }
-	
-	
-	
-	
+
+
+
+
   // now that trees is loaded, make the reverse dictionary
- reverseEntries (dictionary,reverseDictionary);
+  reverseEntries (dictionary,reverseDictionary);
 }
 
 int main()
@@ -311,7 +272,23 @@ int main()
   tops trees;
   
   load (trees,reverseDictionary);
-  
+  ////////////////////////////////////////////////////////////////
+  for (unsigned int temp =0;temp<trees.size();temp++)
+    {
+      top tempRoot = trees[temp];
+
+      unsigned int iter1,iter2;
+      cout << "root: " <<reverseDictionary[temp]<<endl;
+      for (iter1=0;iter1<tempRoot.size();iter1++)
+        {
+          cout <<endl << "branch: " <<reverseDictionary[tempRoot[iter1].first] <<endl;
+          for (iter2=0;iter2<tempRoot[iter1].second.size();iter2++)
+            {
+              cout<<endl <<"leaf: "<<reverseDictionary[tempRoot[iter1].second[iter2]]<<endl;
+            }
+        }
+    }
+  //////////////////////////////////////////////////////////////////// 
   cout << "begin search phase"<<endl;
   for  (unsigned int current = 0;current < trees.size();current++)
     { 
