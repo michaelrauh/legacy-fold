@@ -273,11 +273,11 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
           trees[dictionary[oneBack]].push_back (branch);
         }
       
-
       // place the new word onto the correct branch
+      //unsigned int findBranch (top & root,unsigned int & x)
+      unsigned int i = findBranch (trees[dictionary[twoBack]],dictionary[oneBack]);
 
-      // update the values to ensure that we are ready for the next
-      // word.
+      // update the values (loop constant)
       twoBack = oneBack;
       oneBack = word;
     }
