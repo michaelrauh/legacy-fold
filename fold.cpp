@@ -250,7 +250,7 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
       top dummy;
       trees[temp] = dummy;
     }
-
+  //in many places where it says twoback it means oneback
   in >> twoBack;
   in >> oneBack;
 	// twoBack is the first word, and is therefore only a root.
@@ -265,12 +265,12 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
     {
       in >> word;
       // place the new word onto the correct root
-      if (doesNotContain (trees[dictionary[twoBack]],dictionary[word]))
+      if (doesNotContain (trees[dictionary[oneBack]],dictionary[word]))
         {
           intVectorPair branch;
           branch.first = dictionary[word];
           branch.second.clear();
-          trees[dictionary[twoBack]].push_back (branch);
+          trees[dictionary[oneBack]].push_back (branch);
         }
       
 
