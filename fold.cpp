@@ -20,6 +20,25 @@ typedef pair <unsigned int,intVector> intVectorPair;
 typedef vector <intVectorPair> top;
 typedef vector <top> tops;
 
+//  if (doesNotContainLeaf (trees[dictionary[twoBack]][i].second,dictionary[word]))
+
+bool doesNotContainLeaf (intVector & container, unsigned int & x)
+{
+
+  if (container.empty())
+    {
+      return true;
+    }
+  unsigned int i=0;
+
+  while (i<container.size()-1 && container[i] != x)
+    {
+      i++;
+    }
+  return (container[i] != x);
+
+}
+
 void populateChildren(top & root,unsigned int sub, vector <unsigned int> & children)
 {
   for (unsigned int i = 0;i<root[sub].second.size();i++)
@@ -276,6 +295,11 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
       // place the new word onto the correct branch
       //unsigned int findBranch (top & root,unsigned int & x)
       unsigned int i = findBranch (trees[dictionary[twoBack]],dictionary[oneBack]);
+
+      if (doesNotContainLeaf (trees[dictionary[twoBack]][i].second,dictionary[word]))
+        {
+          trees[dictionary[twoBack]][i].second.push_back(dictionary[word]);
+        }
 
       // update the values (loop constant)
       twoBack = oneBack;
