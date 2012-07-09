@@ -4,6 +4,7 @@
 #include <utility>
 #include <string>
 #include <map>
+#include <algorithm>
 
 //  cout << (float) i /321135634 << '\r' << '\b'; // progress overwite
 //  percentage thingy
@@ -367,10 +368,67 @@ int main()
 
                           // we need the de children.
                           unsigned int de = findBranch (rootD,frame[4]);
-                          
 
-                          // cout << "////////////////"<<endl;
-                          //outPutAll (frame,reverseDictionary);
+                          vector <unsigned int> childrenOfDE (rootD[de].second);
+
+                          top rootC = trees[frame[2]];
+                          bool gotNextF = true;
+                          unsigned int iterF =0;
+
+                          while (gotNextF)
+                            {
+                              getNext (frame,childrenOfDE,rootC,gotNextF,iterF,5);
+
+                              if (gotNextF)
+                                {
+
+                                  ////////////preparing for//////////
+                                  ////////////I  //////////////////////////////////////
+
+                                  // we need the cf children
+                                  unsigned int cf = findBranch (rootC,frame[5]);
+                                  vector <unsigned int> childrenOfCF (rootC[cf].second);
+
+                                  // we need the gh children
+                                  unsigned int gh = findBranch (rootG,frame[7]);
+                                  vector <unsigned int> childrenOfGH (rootG[gh].second);
+                                  
+                                  sort (childrenOfCF.begin(),childrenOfCF.end());
+                                  sort (childrenOfGH.begin(),childrenOfGH.end());
+                                 
+                                  // determine max size of
+                                  // intersection
+                                  vector< unsigned int> intersection;
+                                  if (childrenOfCF.size() > childrenOfGH.size())
+                                    {
+                                      intersection.resize (childrenOfCF.size());
+                                    }
+                                  else
+                                    {
+                                      intersection.resize (childrenOfGH.size());
+                                    }
+                                  vector <unsigned int>::iterator it;
+                                  it = set_intersection (childrenOfGH.begin(),childrenOfGH.end(),childrenOfCF.begin(),childrenOfCF.end(),intersection.begin());
+                                  unsigned int results = (unsigned int) (it-intersection.begin());
+                                  // cout << results<<endl;
+
+                                  for (unsigned int iteri =0;iteri<results;iteri++)
+                                    {
+                                      frame[8] = intersection[iteri];
+                                       cout << "////////////////"<<endl;
+                                      outPutAll (frame,reverseDictionary);
+                                    } 
+                                  
+                                  
+
+                                 
+                                  
+                                 
+                                }
+                            }
+                                           
+
+                         
                         }
                     }
                 }
