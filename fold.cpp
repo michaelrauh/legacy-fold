@@ -32,11 +32,6 @@ bool doesNotContainLeaf (intVector & container, unsigned int & x)
 
 }
 
-void populateChildren(top & root,unsigned int x,vector <unsigned int> children)
-{
-  children = root[x].second;
-}
-
 void populateChildrenForE(top & root,vector <unsigned int> & children)
 {
 	for(unsigned int i = 0;i<root.size();i++)
@@ -356,9 +351,21 @@ int main()
                   {
 
                     unsigned int e = findBranch (rootB,frame[4]);
-                    children.clear();
-         
-                    populateChildren (rootB,e,children);
+                    vector <unsigned int> childrenOfBE (rootB[e].second);
+                   
+                    top rootG = trees[frame[6]];
+                    bool gotNextH=true;
+                    unsigned int iterH =0;
+
+                    while (gotNextH)
+                      {
+                        getNext (frame,childrenOfBE,rootG,gotNextH,iterH,7);
+                        if (gotNextH)
+                          {
+                            cout << "////////////////"<<endl;
+                            outPutAll (frame,reverseDictionary);
+                          }
+                      }
                      
                   }
                }
