@@ -143,13 +143,14 @@ bool doesNotContain (top & root,unsigned int x)
 void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDictionary)
 {
   // check to see if it is junk first
-  //  if (!(frame[3] == frame[1] && frame[6] == frame[2] && frame[1] == frame[3] && frame[7] == frame[5] && frame[6] == frame[2]))
-  //{
+   if (!(frame[3] == frame[1] && frame[6] == frame[2] && frame[1] == frame[3] && frame[7] == frame[5] && frame[6] == frame[2]))
+  {
+  cout << "////////////////"<<endl;
     for (unsigned int i=0;i<frame.size();i++)
       {
         cout << reverseDictionary[frame[i]] << endl;
       }
-    //  }
+      }
 }
 
 void getNext(vector <unsigned int> & frame, vector<unsigned int> children, top & root,bool & gotNext,unsigned int & i, unsigned int framePos)
@@ -415,7 +416,7 @@ int main()
                                   for (unsigned int iteri =0;iteri<results;iteri++)
                                     {
                                       frame[8] = intersection[iteri];
-                                       cout << "////////////////"<<endl;
+                                     
                                       outPutAll (frame,reverseDictionary);
                                     } 
                                   
