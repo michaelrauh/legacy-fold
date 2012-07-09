@@ -32,13 +32,9 @@ bool doesNotContainLeaf (intVector & container, unsigned int & x)
 
 }
 
-void populateChildren(top & root,unsigned int x, vector <unsigned int> & children)
+void populateChildren(top & root,unsigned int x,vector <unsigned int> children)
 {
-
-  for (unsigned int i = 0;i<root[x].second.size();i++)
-    {
-      children.push_back (root[x].second[i]);
-    }
+  children = root[x].second;
 }
 
 void populateChildrenForE(top & root,vector <unsigned int> & children)
@@ -360,6 +356,9 @@ int main()
                   {
 
                     unsigned int e = findBranch (rootB,frame[4]);
+                    children.clear();
+         
+                    populateChildren (rootB,e,children);
                      
                   }
                }
