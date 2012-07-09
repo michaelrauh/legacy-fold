@@ -181,15 +181,16 @@ void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDi
 
 void getNext(vector <unsigned int> & frame, vector<unsigned int> children, top & root,bool & gotNext,unsigned int & i, unsigned int framePos)
 {
-  cout << "enter getNext"<<endl;
-  cout << "i: " <<i<<endl;
+  // cout << "enter getNext"<<endl;
+  //cout << "i: " <<i<<endl;
   // iterates over the children vector, and finds the ones that occur
   // in the passed in root.
   while  (i < children.size() && doesNotContain (root,children[i]))
     {
       i++;
+      //  cout << "in while inside getNext " << i <<endl;
     }
-
+  // cout << "out of while inside getNext"<<endl;
   if (!(i < children.size()))
     {
       gotNext = false;
@@ -205,7 +206,7 @@ void getNext(vector <unsigned int> & frame, vector<unsigned int> children, top &
     }
   i++;
   //   }
-  cout << "exit getnext"<<endl;
+  //  cout << "exit getnext"<<endl;
 }
 
 
@@ -237,6 +238,8 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
     {
       iterateCoordinates (root,mainCoordinates,sweepCoordinates);
     }
+ cout << "main: (" << mainCoordinates.first <<"," <<mainCoordinates.second <<")" << "  ";
+            cout << "sweep: (" <<sweepCoordinates.first << "," <<sweepCoordinates.second <<")" << endl;
 
   frame [0] = current; // a
   frame [1] = root [mainCoordinates.first].first; // b
@@ -262,7 +265,7 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
   
   loadDictionary (trees,dictionary);
   // cout << " dictionary size: "<<dictionary.size()<<endl;
-  cout << "dictionary loaded" <<endl;
+  // cout << "dictionary loaded" <<endl;
 
   // can use fill constructor?
   trees.resize(dictionary.size());
@@ -307,6 +310,12 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
       twoBack = oneBack;
       oneBack = word;
     }
+  // the final branch that was put on needs to be deleted.
+  // this branch was put onto the final root that is talked about, and
+  // it is the last entry.
+  trees[dictionary[word]].pop_back(); // word is what used to be oneBack
+
+
   // now that trees is loaded, make the reverse dictionary
   reverseEntries (dictionary,reverseDictionary);
 }
@@ -324,20 +333,20 @@ int main()
       top tempRoot = trees[temp];
 
       unsigned int iter1,iter2;
-       cout << "root: " <<reverseDictionary[temp]<<endl;
+         cout << "root: " <<reverseDictionary[temp]<<endl;
       for (iter1=0;iter1<tempRoot.size();iter1++)
         {
-           cout <<"\t" << "branch: " <<reverseDictionary[tempRoot[iter1].first] <<endl;
+            cout <<"\t" << "branch: " <<reverseDictionary[tempRoot[iter1].first] <<endl;
           for (iter2=0;iter2<tempRoot[iter1].second.size();iter2++)
             {
-                 cout<<"\t\t" <<"leaf: "<<reverseDictionary[tempRoot[iter1].second[iter2]]<<endl;
+               cout<<"\t\t" <<"leaf: "<<reverseDictionary[tempRoot[iter1].second[iter2]]<<endl;
             }
         }
     }
   //////////////////////////////////////////////////////////////////// 
-  cout << "begin search phase"<<endl;
-  cout << "size: " << trees.size()<<endl;
-  for  (unsigned int current = 0;current < trees.size();current++)
+  // cout << "begin search phase"<<endl;
+  // cout << "size: " << trees.size()<<endl;
+  for  (unsigned int current = 3024;current < trees.size();current++)
     { 
       cout << "current: "<< current<<endl;
       pair <unsigned int, unsigned int> mainCoordinates;
@@ -347,22 +356,22 @@ int main()
       mainCoordinates.second = 0;
       sweepCoordinates = mainCoordinates;
       
-      //   cout<< "////////////////////////////"<<endl;
-          //    cout <<"current: " <<current <<endl;
+        cout<< "////////////////////////////"<<endl;
+              cout <<"current: " <<current <<endl;
 
       top root = trees[current];
       unsigned int max = maximum (root);
-      //  cout <<" max " <<max<<endl;
+        cout <<" max " <<max<<endl;
       bool ranBefore = false;
-       cout << "max: " <<max<<endl;
-        cout << "root: "<<reverseDictionary [current]<<endl;
+        cout << "max: " <<max<<endl;
+          cout << "root: "<<reverseDictionary [current]<<endl;
       for (unsigned int pos = 0;pos < max; pos++)
         { 
           getNextFrame (current,root,frame,mainCoordinates,sweepCoordinates,ranBefore);/////////////////////////////////////////////
               
 
-             cout << "main: (" << mainCoordinates.first <<"," <<mainCoordinates.second <<")" << "  ";
-             cout << "sweep: (" <<sweepCoordinates.first << "," <<sweepCoordinates.second <<")" << endl;
+           cout << "main: (" << mainCoordinates.first <<"," <<mainCoordinates.second <<")" << "  ";
+            cout << "sweep: (" <<sweepCoordinates.first << "," <<sweepCoordinates.second <<")" << endl;
                   //   outPutAll (frame,reverseDictionary);
 
           ///////////preparing to get
@@ -372,20 +381,21 @@ int main()
            bool gotNextE = true;
           top rootB = trees[frame[1]];
           top rootD = trees[frame[3]];
-
+          // cout << "beforepopulate"<<endl;
           populateChildrenForE(rootB,children); 
+          // cout <<"afterpopulate"<<endl;
      
              while (gotNextE)
               {
-                // this might be filling in the wrong value. No
-                // crashes though.
+                //    cout << "iterE: " <<iterE<<endl;
                 getNext (frame,children,rootD,gotNextE,iterE,4); 
                                                            
              
                    if (gotNextE)
                   {
-                      cout << "/////////////////////////////////"<<endl;
-                     outPutAll (frame,reverseDictionary);
+                    // cout << "/////////////////////////////////"<<endl;
+                      // outPutAll (frame,reverseDictionary);
+                     // cout <<"after output"<<endl;
                   }
                }
         }
