@@ -316,7 +316,7 @@ int main()
       
       // cout<< "////////////////////////////"<<endl;
       //      cout <<"current: " <<current <<endl;
-
+      
       top root = trees[current];
       unsigned int max = maximum (root);
       // cout <<" max " <<max<<endl;
@@ -326,49 +326,55 @@ int main()
       for (unsigned int pos = 0;pos < max; pos++)
         { 
           getNextFrame (current,root,frame,mainCoordinates,sweepCoordinates,ranBefore);/////////////////////////////////////////////
-              
-
+          
+          
           //  cout << "main: (" << mainCoordinates.first <<"," <<mainCoordinates.second <<")" << "  ";
           //cout << "sweep: (" <<sweepCoordinates.first << "," <<sweepCoordinates.second <<")" << endl;
-                  //   outPutAll (frame,reverseDictionary);
-
+          //   outPutAll (frame,reverseDictionary);
+          
           ///////////preparing to get
           ///////////E/////////////////////////////////////////////////////////////
           vector <unsigned int> children;
-           unsigned int iterE = 0;
-           bool gotNextE = true;
+          unsigned int iterE = 0;
+          bool gotNextE = true;
           top rootB = trees[frame[1]];
           top rootD = trees[frame[3]];
-        
+          
           populateChildrenForE(rootB,children); 
-             
-             while (gotNextE)
-              {
-        
-                getNext (frame,children,rootD,gotNextE,iterE,4); 
-                     
-                   if (gotNextE)
-                  {
+          
+          while (gotNextE)
+            {
+              
+              getNext (frame,children,rootD,gotNextE,iterE,4); 
+              
+              if (gotNextE)
+                {
+                  
+                  unsigned int e = findBranch (rootB,frame[4]);
+                  vector <unsigned int> childrenOfBE (rootB[e].second);
+                  
+                  top rootG = trees[frame[6]];
+                  bool gotNextH=true;
+                  unsigned int iterH =0;
+                  
+                  while (gotNextH)
+                    {
+                      getNext (frame,childrenOfBE,rootG,gotNextH,iterH,7);
+                      if (gotNextH)
+                        {
+                          ////////////preparing for
+                          ////////////F//////////////////////////////
 
-                    unsigned int e = findBranch (rootB,frame[4]);
-                    vector <unsigned int> childrenOfBE (rootB[e].second);
-                   
-                    top rootG = trees[frame[6]];
-                    bool gotNextH=true;
-                    unsigned int iterH =0;
+                          // we need the de children.
+                          unsigned int de = findBranch (rootD,frame[4]);
+                          
 
-                    while (gotNextH)
-                      {
-                        getNext (frame,childrenOfBE,rootG,gotNextH,iterH,7);
-                        if (gotNextH)
-                          {
-                            cout << "////////////////"<<endl;
-                            outPutAll (frame,reverseDictionary);
-                          }
-                      }
-                     
-                  }
-               }
+                          // cout << "////////////////"<<endl;
+                          //outPutAll (frame,reverseDictionary);
+                        }
+                    }
+                }
+            }
         }
     }
   return 0;
