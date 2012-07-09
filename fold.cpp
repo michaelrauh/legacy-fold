@@ -312,7 +312,7 @@ int main()
   //////////////////////////////////////////////////////////////////// 
    cout << "begin search phase"<<endl;
    cout << "number of iterations: " << trees.size()<<endl;
-  for  (unsigned int current = 3024;current < trees.size();current++)
+  for  (unsigned int current = 0;current < trees.size();current++)
     { 
       //   cout << "current: "<< current<<endl;
       pair <unsigned int, unsigned int> mainCoordinates;
