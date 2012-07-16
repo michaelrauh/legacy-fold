@@ -146,11 +146,15 @@ void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDi
    if (!(frame[3] == frame[1] && frame[6] == frame[2] && frame[1] == frame[3] && frame[7] == frame[5] && frame[6] == frame[2]))
   {
   cout << "////////////////"<<endl;
-    for (unsigned int i=0;i<frame.size();i++)
-      {
-        cout << reverseDictionary[frame[i]] << endl;
-      }
-      }
+  //for (unsigned int i=0;i<frame.size();i++)
+  // {
+  //  cout << reverseDictionary[frame[i]] << endl;
+  // }
+
+  cout << reverseDictionary[frame[0]] << " " << reverseDictionary[frame[1]] << " " << reverseDictionary[frame[2]] << endl;
+  cout << reverseDictionary[frame[3]] << " " << reverseDictionary[frame[4]] << " " << reverseDictionary[frame[5]] << endl;
+  cout << reverseDictionary[frame[6]] << " " << reverseDictionary[frame[7]] << " " << reverseDictionary[frame[8]] << endl;
+  }
 }
 
 void getNext(vector <unsigned int> & frame, vector<unsigned int> children, top & root,bool & gotNext,unsigned int & i, unsigned int framePos)
@@ -291,15 +295,15 @@ int main()
   for (unsigned int temp =0;temp<trees.size();temp++)
     {
       top tempRoot = trees[temp];
-
+      
       unsigned int iter1,iter2;
-         cout << "root: " <<reverseDictionary[temp]<<endl;
+      cout << "root: " <<reverseDictionary[temp]<<endl;
       for (iter1=0;iter1<tempRoot.size();iter1++)
         {
-            cout <<"\t" << "branch: " <<reverseDictionary[tempRoot[iter1].first] <<endl;
+          cout <<"\t" << "branch: " <<reverseDictionary[tempRoot[iter1].first] <<endl;
           for (iter2=0;iter2<tempRoot[iter1].second.size();iter2++)
             {
-               cout<<"\t\t" <<"leaf: "<<reverseDictionary[tempRoot[iter1].second[iter2]]<<endl;
+              cout<<"\t\t" <<"leaf: "<<reverseDictionary[tempRoot[iter1].second[iter2]]<<endl;
             }
         }
     }
@@ -317,7 +321,7 @@ int main()
       sweepCoordinates = mainCoordinates;
       
       // cout<< "////////////////////////////"<<endl;
-      //      cout <<"current: " <<current <<endl;
+            cout <<"current: " <<current <<endl;
       
       top root = trees[current];
       unsigned int max = maximum (root);
