@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <algorithm>
+#include <set>
 
 //  cout << (float) i /321135634 << '\r' << '\b'; // progress overwite
 //  percentage thingy
@@ -143,18 +144,32 @@ bool doesNotContain (top & root,unsigned int x)
 void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDictionary)
 {
   // check to see if it is junk first
-   if (!(frame[3] == frame[1] && frame[6] == frame[2] && frame[1] == frame[3] && frame[7] == frame[5] && frame[6] == frame[2]))
-  {
-  cout << "////////////////"<<endl;
-  //for (unsigned int i=0;i<frame.size();i++)
-  // {
-  //  cout << reverseDictionary[frame[i]] << endl;
-  // }
+  multiset <int> words;
+  bool repeat = false;
 
-  cout << reverseDictionary[frame[0]] << " " << reverseDictionary[frame[1]] << " " << reverseDictionary[frame[2]] << endl;
-  cout << reverseDictionary[frame[3]] << " " << reverseDictionary[frame[4]] << " " << reverseDictionary[frame[5]] << endl;
-  cout << reverseDictionary[frame[6]] << " " << reverseDictionary[frame[7]] << " " << reverseDictionary[frame[8]] << endl;
-  }
+  for (unsigned int i=0;i<frame.size();i++)
+    {
+      words.insert(frame[i]);
+    }
+
+  unsigned int iter =0;
+  while (iter<frame.size() && (!repeat))
+    {
+      if (words.count (frame[iter]) > 1)
+        {
+          repeat = true;
+        }
+      iter++;
+    }
+
+  if (!repeat)
+    {
+      cout << "////////////////"<<endl;
+      
+      cout << reverseDictionary[frame[0]] << " " << reverseDictionary[frame[1]] << " " << reverseDictionary[frame[2]] << endl;
+      cout << reverseDictionary[frame[3]] << " " << reverseDictionary[frame[4]] << " " << reverseDictionary[frame[5]] << endl;
+      cout << reverseDictionary[frame[6]] << " " << reverseDictionary[frame[7]] << " " << reverseDictionary[frame[8]] << endl;
+    }
 }
 
 void getNext(vector <unsigned int> & frame, vector<unsigned int> children, top & root,bool & gotNext,unsigned int & i, unsigned int framePos)
@@ -321,7 +336,7 @@ int main()
       sweepCoordinates = mainCoordinates;
       
       // cout<< "////////////////////////////"<<endl;
-            cout <<"current: " <<current <<endl;
+      //  cout <<"current: " <<current <<endl;
       
       top root = trees[current];
       unsigned int max = maximum (root);
@@ -417,28 +432,20 @@ int main()
                                   unsigned int results = (unsigned int) (it-intersection.begin());
                                   // cout << results<<endl;
 
-                                  for (unsigned int iteri =0;iteri<results;iteri++)
+                                  for (unsigned int iteri = 0;iteri < results;iteri++)
                                     {
                                       frame[8] = intersection[iteri];
                                      
                                       outPutAll (frame,reverseDictionary);
                                     } 
-                                  
-                                  
-
-                                 
-                                  
-                                 
                                 }
                             }
-                                           
-
-                         
                         }
                     }
                 }
             }
         }
     }
+  cout << "search complete\n";
   return 0;
 }
