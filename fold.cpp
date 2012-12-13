@@ -307,7 +307,7 @@ int main()
   
   load (trees,reverseDictionary);
   ////////////////////////////////////////////////////////////////
-  for (unsigned int temp =0;temp<trees.size();temp++)
+  /* for (unsigned int temp =0;temp<trees.size();temp++)
     {
       top tempRoot = trees[temp];
       
@@ -321,7 +321,7 @@ int main()
               cout<<"\t\t" <<"leaf: "<<reverseDictionary[tempRoot[iter1].second[iter2]]<<endl;
             }
         }
-    }
+    }*/
   //////////////////////////////////////////////////////////////////// 
    cout << "begin search phase"<<endl;
    cout << "number of iterations: " << trees.size()<<endl;
