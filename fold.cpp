@@ -7,7 +7,9 @@
 #include <algorithm>
 #include <set>
 
-// To Do: Create a procedure that loads the children or grandchildren of a root into a vector, so that the vector can be passed into a getIntersect function. Also, make a getIntersection function.
+// To Do: make a getIntersection function.
+
+
 
 //populatechildrenforE is about to expand to just get children. Get grandchildren may be useful. It would have a call to find branch
 
@@ -20,6 +22,28 @@ typedef vector <unsigned int> intVector;
 typedef pair <unsigned int,intVector> intVectorPair;
 typedef vector <intVectorPair> top;
 typedef vector <top> tops;
+
+// declare a new vector and pass it in for intersect. Pass in children vectors, and a new size int. Size will will be the size of the intersect. Intersect will be the intersect vector. Don't trust the size of this vector. It has junk. Use size instead.
+void getIntersection (vector <unsigned int> x, vector <unsigned int> y, unsigned int size, vector <unsigned int> intersect)
+{
+    
+    sort (x.begin(),x.end());
+    sort (y.begin(),y.end());
+    
+    if (x.size() > y.size())
+    {
+        intersect.resize (x.size());
+    }
+    else
+    {
+        intersect.resize (y.size());
+    }
+    
+    vector <unsigned int>::iterator it;
+    it = set_intersection (x.begin(),x.end(),y.begin(),y.end(),intersect.begin());
+    size = (unsigned int) (it-intersect.begin()); // gives the size of intersection before you get junk
+    
+}
 
 // function returns true if a branch object does not contain a given leaf
 bool doesNotContainLeaf (intVector & container, unsigned int & x)
