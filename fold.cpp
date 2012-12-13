@@ -17,6 +17,7 @@ typedef pair <unsigned int,intVector> intVectorPair;
 typedef vector <intVectorPair> top;
 typedef vector <top> tops;
 
+// function returns true if a branch object does not contain a given leaf
 bool doesNotContainLeaf (intVector & container, unsigned int & x)
 {
 
@@ -34,6 +35,7 @@ bool doesNotContainLeaf (intVector & container, unsigned int & x)
 
 }
 
+// procedure that places branch members from root into vector for easy retrieval. Only used for E so far.
 void populateChildrenForE(top & root,vector <unsigned int> & children)
 {
 	for(unsigned int i = 0;i<root.size();i++)
@@ -42,7 +44,8 @@ void populateChildrenForE(top & root,vector <unsigned int> & children)
 	}
 }
 
-unsigned int findBranch (top & root,unsigned int & x)// findBranch (rootB,frame[4]);
+// function returns the index of a branch for the root
+unsigned int findBranch (top & root,unsigned int & x)
 {
   unsigned int i = 0;
 
@@ -57,6 +60,7 @@ unsigned int findBranch (top & root,unsigned int & x)// findBranch (rootB,frame[
   return i;
 }
 
+// procedure acts upon main and sweep coordinates directly, in order to find the next frame configuration
 void iterateCoordinates (top & root,pair <unsigned int, unsigned int> & mainCoordinates,pair <unsigned int, unsigned int> & sweepCoordinates)
 {
  if (sweepCoordinates.first == root.size() -1 && sweepCoordinates.second == root[root.size() -1].second.size() -1)
@@ -92,6 +96,7 @@ void iterateCoordinates (top & root,pair <unsigned int, unsigned int> & mainCoor
     }
 }
 
+// procedure that creates a string to int dictionary entry for every unique word in the file
 void loadDictionary(tops & trees,map <string,unsigned int> & dictionary)
 {
   string word;
@@ -108,6 +113,7 @@ void loadDictionary(tops & trees,map <string,unsigned int> & dictionary)
     }
 }
 
+// procedure populates a reverse dictionary, that takes an int and gives back a string, for human readable output
 void reverseEntries (map <string,unsigned int> & dictionary, map <unsigned int,string> & reverseDictionary)
 {
   typedef pair <unsigned int,string> intString;
@@ -123,6 +129,7 @@ void reverseEntries (map <string,unsigned int> & dictionary, map <unsigned int,s
     }
  }
 
+// function returns true if a root does not have a value x as a branch (child)
 bool doesNotContain (top & root,unsigned int x)
 {
    unsigned int i=0;
@@ -141,6 +148,7 @@ bool doesNotContain (top & root,unsigned int x)
     }
 }
 
+// applies filtering and outputs to stdout sloppily formatted data
 void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDictionary)
 {
   // check to see if it is junk first
@@ -172,6 +180,7 @@ void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDi
     }
 }
 
+// procedure that gets the next value that passes a check against the perpindicular. framepos is the position in the frame of the data point being gotten. gotNext is a status that will be false if the root is exhausted. If it is successful, it will insert into the frame a word that "works" - work on this explanation
 void getNext(vector <unsigned int> & frame, vector<unsigned int> children, top & root,bool & gotNext,unsigned int & i, unsigned int framePos)
 {
   while  (i < children.size() && doesNotContain (root,children[i]))
@@ -195,7 +204,7 @@ void getNext(vector <unsigned int> & frame, vector<unsigned int> children, top &
 }
 
 
-
+// function returns int - the number of runs on a given root. Saves lots of computing with math!
 unsigned int maximum (top root)
 {
   unsigned int grandchildren = 0;
@@ -206,16 +215,17 @@ unsigned int maximum (top root)
       grandchildren += root[i].second.size();
       i++;
     }
-  if (grandchildren == 1) // is this necessary? Test without this.
-    {
-      return 1;
-    }
-  else
-    {
+ // if (grandchildren == 1) // is this necessary? Test without this.
+   // {
+     // return 1;
+    //}
+  //else
+    //{
       return ((grandchildren * (grandchildren+1))/2);
-    }
+    //}
 }
 
+// procedure places into the frame new values, based upon main and sweep coordinates gotten from iterateCoordinates
 void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & frame,pair <unsigned int, unsigned int> & mainCoordinates,pair <unsigned int, unsigned int> & sweepCoordinates,bool & ranBefore)
 {
   // This bool prevents missing the first one.
@@ -237,7 +247,7 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
 
  
 
-
+// prepares for the search phase. Includes creation of necessary data structures from stream, and population of dictionaries.
  void load (tops & trees,  map <unsigned int,string> &  reverseDictionary)
 {
   fstream in; in.open ("input.txt",fstream::in); // open the stream
@@ -307,6 +317,8 @@ int main()
   
   load (trees,reverseDictionary);
   ////////////////////////////////////////////////////////////////
+    
+    //This outputs a representation of the main data structure.
   /* for (unsigned int temp =0;temp<trees.size();temp++)
     {
       top tempRoot = trees[temp];
@@ -322,7 +334,9 @@ int main()
             }
         }
     }*/
-  //////////////////////////////////////////////////////////////////// 
+    
+  ////////////////////////////////////////////////////////////////////
+    
    cout << "begin search phase"<<endl;
    cout << "number of iterations: " << trees.size()<<endl;
   for  (unsigned int current = 0;current < trees.size();current++)
