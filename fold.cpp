@@ -180,7 +180,7 @@ void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDi
     }
 }
 
-// procedure that gets the next value that passes a check against the perpindicular. framepos is the position in the frame of the data point being gotten. gotNext is a status that will be false if the root is exhausted. If it is successful, it will insert into the frame a word that "works" - work on this explanation
+// procedure that gets the next value that passes a check against the perpindicular. framepos is the position in the frame of the data point being gotten. gotNext is a status that will be false if the root is exhausted. If it is successful, it will insert into the frame a word that "works" It takes a vector of children of one root, and a plain root from the other side to check against. This seems a bit lopsided though. Why not just take all of the children, run a set intersection (like for I) and do a for each over the set intersection? Seems simpler to me.
 void getNext(vector <unsigned int> & frame, vector<unsigned int> children, top & root,bool & gotNext,unsigned int & i, unsigned int framePos)
 {
   while  (i < children.size() && doesNotContain (root,children[i]))
@@ -365,8 +365,7 @@ int main()
           
           //  cout << "main: (" << mainCoordinates.first <<"," <<mainCoordinates.second <<")" << "  ";
           //cout << "sweep: (" <<sweepCoordinates.first << "," <<sweepCoordinates.second <<")" << endl;
-          //   outPutAll (frame,reverseDictionary);
-          
+                   
           ///////////preparing to get
           ///////////E/////////////////////////////////////////////////////////////
           vector <unsigned int> children;
@@ -375,12 +374,12 @@ int main()
           top rootB = trees[frame[1]];
           top rootD = trees[frame[3]];
           
-          populateChildrenForE(rootB,children); 
+          populateChildrenForE(rootB,children); // gets the children of root B. That is, possible values for e from the perspective of B.
           
           while (gotNextE)
             {
               
-              getNext (frame,children,rootD,gotNextE,iterE,4); 
+              getNext (frame,children,rootD,gotNextE,iterE,4); // edits frame at position 4, by iterating iterE over children, and checking to see if they are children of rootD. If they are, gotNextE is true. It will continue to search until children is exhausted or until gotNextE is true though. - design note : What is to prevent just finding the intersection of these sets of children, and then iterating over that intersection? All that really matters is what is in the frame. Once the frame is gotten, you go to the next round. You just have to make sure you don't go past where you are trying to go. This can be avoided by essentially doing a for each. 
               
               if (gotNextE)
                 {
