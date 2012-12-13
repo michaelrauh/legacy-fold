@@ -7,6 +7,10 @@
 #include <algorithm>
 #include <set>
 
+// To Do: Create a procedure that loads the children or grandchildren of a root into a vector, so that the vector can be passed into a getIntersect function. Also, make a getIntersection function.
+
+//populatechildrenforE is about to expand to just get children. Get grandchildren may be useful. It would have a call to find branch
+
 //  cout << (float) i /321135634 << '\r' << '\b'; // progress overwite
 //  percentage thingy
 
@@ -418,9 +422,12 @@ int main()
                                   ////////////preparing for//////////
                                   ////////////I  //////////////////////////////////////
 
+                                    
+                                    // get the children vectors, sort them, determine which is larger,make an intersection destination vector, and get the set intersection with iterator. Then calculate a results size.  All of this can be pushed to a function. After the function, a for loop bound is had, and an intersection vector exists to for over.  The issue is in setting the destination for what vector is being gotten, as some are children, and some are grandchildren. In terms of design, it may be better to pass in the vectors already done.
+                                    
                                   // we need the cf children
                                   unsigned int cf = findBranch (rootC,frame[5]);
-                                  vector <unsigned int> childrenOfCF (rootC[cf].second);
+                                  vector <unsigned int> childrenOfCF (rootC[cf].second); // fancy copy constructor. C++ is incredible.
 
                                   // we need the gh children
                                   unsigned int gh = findBranch (rootG,frame[7]);
@@ -429,8 +436,7 @@ int main()
                                   sort (childrenOfCF.begin(),childrenOfCF.end());
                                   sort (childrenOfGH.begin(),childrenOfGH.end());
                                  
-                                  // determine max size of
-                                  // intersection
+                                  // determine max size of intersection
                                   vector< unsigned int> intersection;
                                   if (childrenOfCF.size() > childrenOfGH.size())
                                     {
@@ -440,14 +446,15 @@ int main()
                                     {
                                       intersection.resize (childrenOfGH.size());
                                     }
+                                    
                                   vector <unsigned int>::iterator it;
                                   it = set_intersection (childrenOfGH.begin(),childrenOfGH.end(),childrenOfCF.begin(),childrenOfCF.end(),intersection.begin());
-                                  unsigned int results = (unsigned int) (it-intersection.begin());
+                                  unsigned int results = (unsigned int) (it-intersection.begin()); // gives the size of intersection before you get junk
                                   // cout << results<<endl;
 
-                                  for (unsigned int iteri = 0;iteri < results;iteri++)
+                                  for (unsigned int iteri = 0;iteri < results;iteri++) // for each item in the intersection
                                     {
-                                      frame[8] = intersection[iteri];
+                                      frame[8] = intersection[iteri]; // assign item to frame space 8. This is a bit of hard coding that is necessary
                                      
                                       outPutAll (frame,reverseDictionary);
                                     } 
