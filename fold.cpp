@@ -24,7 +24,7 @@ typedef vector <intVectorPair> top;
 typedef vector <top> tops;
 
 // declare a new vector and pass it in for intersect. Pass in children vectors, and a new size int. Size will will be the size of the intersect. Intersect will be the intersect vector. Don't trust the size of this vector. It has junk. Use size instead.
-void getIntersection (vector <unsigned int> x, vector <unsigned int> y, unsigned int size, vector <unsigned int> intersect)
+void getIntersection (vector <unsigned int> & x, vector <unsigned int> & y, unsigned int & size, vector <unsigned int> & intersect)
 {
     
     sort (x.begin(),x.end());
@@ -456,29 +456,14 @@ int main()
                                   // we need the gh children
                                   unsigned int gh = findBranch (rootG,frame[7]);
                                   vector <unsigned int> childrenOfGH (rootG[gh].second);
-                                  
-                                  sort (childrenOfCF.begin(),childrenOfCF.end());
-                                  sort (childrenOfGH.begin(),childrenOfGH.end());
-                                 
-                                  // determine max size of intersection
-                                  vector< unsigned int> intersection;
-                                  if (childrenOfCF.size() > childrenOfGH.size())
-                                    {
-                                      intersection.resize (childrenOfCF.size());
-                                    }
-                                  else
-                                    {
-                                      intersection.resize (childrenOfGH.size());
-                                    }
                                     
-                                  vector <unsigned int>::iterator it;
-                                  it = set_intersection (childrenOfGH.begin(),childrenOfGH.end(),childrenOfCF.begin(),childrenOfCF.end(),intersection.begin());
-                                  unsigned int results = (unsigned int) (it-intersection.begin()); // gives the size of intersection before you get junk
-                                  // cout << results<<endl;
-
-                                  for (unsigned int iteri = 0;iteri < results;iteri++) // for each item in the intersection
+                                    vector <unsigned int> intersectForI;
+                                    unsigned int sizeOfIntersectForI;
+                                    getIntersection (childrenOfCF, childrenOfGH, sizeOfIntersectForI, intersectForI);
+                                  
+                                    for (unsigned int iteri = 0;iteri < sizeOfIntersectForI;iteri++) // for each item in the intersection
                                     {
-                                      frame[8] = intersection[iteri]; // assign item to frame space 8. This is a bit of hard coding that is necessary
+                                      frame[8] = intersectForI[iteri]; // assign item to frame space 8. This is a bit of hard coding that is necessary
                                      
                                       outPutAll (frame,reverseDictionary);
                                     } 
