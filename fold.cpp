@@ -207,9 +207,9 @@ void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDi
       cout << reverseDictionary[frame[3]] << " " << reverseDictionary[frame[4]] << " " << reverseDictionary[frame[5]] << endl; //def
       cout << reverseDictionary[frame[6]] << " " << reverseDictionary[frame[7]] << " " << reverseDictionary[frame[8]] << endl; //ghi
       cout << endl; /////////////////
-      cout << reverseDictionary[frame[9]] << " " << endl; // jkl
+      cout << reverseDictionary[frame[9]] << " " << reverseDictionary[frame[10]] << " " << endl; // jkl
       cout <<  reverseDictionary[frame[12]] << " " << endl; // mno
-      cout << reverseDictionary[frame[15]] << " " << endl; // pqr
+      cout <<  " " << endl; // pqr
     }
 }
 
@@ -464,26 +464,34 @@ int main()
 				{
 				  frame[12] = intersectForM[iterM];
 			      
-				  /////////////////////////// preparing for P ///////////////////////////////////
-				  vector <unsigned int> childrenOfI;
-				  getChildren (trees[frame[8]],childrenOfI);
-				  
-				   unsigned int JM = findBranch (trees[frame[9]],frame[12]);
-				   vector <unsigned int> childrenOfJM (trees[frame[9]][JM].second);
+				  /////////////////////////// preparing for K ///////////////////////////////////
 
+				  // childrenOfB is hanging out
+				  // childrenOfJ is hanging out
 
-				   //target:
-				   vector <unsigned int> intersectForP;
-				   unsigned int sizeOfIntersectForP;
-				   
-				   getIntersection (childrenOfI,childrenOfJM,sizeOfIntersectForP,intersectForP);
+				  //target data:
+				  vector <unsigned int> intersectForK;
+				  unsigned int sizeOfIntersectForK;
 
-				   for (unsigned int iterP = 0; iterP < sizeOfIntersectForP; iterP++)
+				  getIntersection (childrenOfB,childrenOfJ,sizeOfIntersectForK,intersectForK);
+				   for (unsigned int iterK = 0; iterK < sizeOfIntersectForK; iterK++)
 				     {
+				       frame[10] = intersectForK[iterK];
+				       /////////////////////// preparing for N ///////////////////////////////
+				       // Here we are actually concerned with a triple intersection k,m,e
+				       vector <unsigned int> childrenOfK;
+				       vector <unsigned int> childrenOfM;
+				       vector <unsigned int> childrenOfE;
+				       
+				       getChildren (trees[frame[10]],childrenOfK);
+				       getChildren (trees[frame[12]],childrenOfM);
+				       getChildren (trees[frame[4]],childrenOfE);
 
-				       	  frame[15] = intersectForP[iterP];
+				       // Now would be a good time to magically have a getTripleIntersection method...
+
 				       outPutAll (frame,reverseDictionary);
 				     }
+				     
 				}
 			    }
 			} 
