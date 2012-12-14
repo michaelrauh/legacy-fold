@@ -408,20 +408,26 @@ int main()
               
               if (gotNextE)
                 {
-                  
+                  //we need the BE children
                   unsigned int e = findBranch (rootB,frame[4]);
                   vector <unsigned int> childrenOfBE (rootB[e].second);
                   
+                    // we also need the children of G
                   top rootG = trees[frame[6]];
-                  bool gotNextH=true;
-                  unsigned int iterH =0;
+                    vector <unsigned int> childrenOfG;
+                    getChildren (rootG,childrenOfG);
+                    
+                    // variables to be filled by intersect:
+                    vector <unsigned int> intersectForH;
+                    unsigned int sizeOfIntersectForH;
+                    
+                    getIntersection (childrenOfBE, childrenOfG,sizeOfIntersectForH,intersectForH);
                   
-                  while (gotNextH)
+                    for (unsigned int iterH = 0; iterH < sizeOfIntersectForH;iterH++)
                     {
-                      getNext (frame,childrenOfBE,rootG,gotNextH,iterH,7);
-                      if (gotNextH)
-                        {
-                          ////////////preparing for
+                        frame[7] = intersectForH[iterH]; // assign H, then go on to get possible F values
+                        
+                        ////////////preparing for
                           ////////////F//////////////////////////////
 
                           // we need the de children.
@@ -469,7 +475,6 @@ int main()
                             }
                         }
                     }
-                }
             }
         }
     }
