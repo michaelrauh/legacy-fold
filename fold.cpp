@@ -180,13 +180,13 @@ void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDi
   multiset <int> words;
   bool repeat = false;
   
-  for (unsigned int i=0;i<frame.size();i++)
+  for (unsigned int i=0;i</*frame.size()*/10;i++)
     {
       words.insert(frame[i]);
     }
   
   unsigned int iter =0;
-  while (iter<frame.size() && (!repeat))
+  while (iter</*frame.size()*/10 && (!repeat))
     {
       if (words.count (frame[iter]) > 1)
         {
@@ -202,6 +202,8 @@ void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDi
       cout << reverseDictionary[frame[0]] << " " << reverseDictionary[frame[1]] << " " << reverseDictionary[frame[2]] << endl;
       cout << reverseDictionary[frame[3]] << " " << reverseDictionary[frame[4]] << " " << reverseDictionary[frame[5]] << endl;
       cout << reverseDictionary[frame[6]] << " " << reverseDictionary[frame[7]] << " " << reverseDictionary[frame[8]] << endl;
+      cout << endl;
+      cout << reverseDictionary[frame[10]] << endl;
     }
 }
 
@@ -307,7 +309,7 @@ void load (tops & trees,  map <unsigned int,string> &  reverseDictionary)
 
 int main()
 {
-  vector <unsigned int> frame (9,1234578); // here is an easy to recognize value, to indicate that a number was missed.
+  vector <unsigned int> frame (27,1234578); // here is an easy to recognize value, to indicate that a number was missed.
   map <unsigned int,string> reverseDictionary;
   tops trees;
   
@@ -428,9 +430,21 @@ int main()
                       
 		      for (unsigned int iteri = 0;iteri < sizeOfIntersectForI;iteri++) 
 			{
-			  frame[8] = intersectForI[iteri];
-                          
-			  outPutAll (frame,reverseDictionary);
+			  frame[8] = intersectForI[iteri]; // assign I, then get possible J values
+			  
+			  ///////////////////Preparing for J //////////////////////////////////////////////////////////
+
+
+			  vector <unsigned int> childrenOfA;
+			  getChildren (trees[frame[0]],childrenOfA);
+
+			  // In this case, there is nothing to intersect against. Everything goes through. We used frames to speed through these before.
+			  for (unsigned int iterJ = 0; iterJ < childrenOfA.size();iterJ++)
+			    {
+			      frame[10] = childrenOfA[iterJ];
+
+			      outPutAll (frame,reverseDictionary);
+			    }
 			} 
 		    }
 		}
