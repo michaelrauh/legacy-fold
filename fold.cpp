@@ -184,13 +184,13 @@ void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDi
   multiset <int> words;
   bool repeat = false;
   
-  for (unsigned int i=0;i</*frame.size()*/11;i++)
+  for (unsigned int i=0;i</*frame.size()*/13;i++)
     {
       words.insert(frame[i]);
     }
   
   unsigned int iter =0;
-  while (iter</*frame.size()*/11 && (!repeat))
+  while (iter</*frame.size()*/13 && (!repeat))
     {
       if (words.count (frame[iter]) > 1)
         {
@@ -208,8 +208,8 @@ void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDi
       cout << reverseDictionary[frame[6]] << " " << reverseDictionary[frame[7]] << " " << reverseDictionary[frame[8]] << endl; //ghi
       cout << endl; /////////////////
       cout << reverseDictionary[frame[9]] << " " << reverseDictionary[frame[10]] << " " << endl; // jkl
-      cout <<  reverseDictionary[frame[12]] << " " << endl; // mno
-      cout <<  " " << endl; // pqr
+      cout << reverseDictionary[frame[12]] << " " << reverseDictionary[frame[13]] << " " << endl; // mno
+      cout << reverseDictionary[frame[15]] << " " << endl; // pqr
     }
 }
 
@@ -487,9 +487,48 @@ int main()
 				       getChildren (trees[frame[12]],childrenOfM);
 				       getChildren (trees[frame[4]],childrenOfE);
 
-				       // Now would be a good time to magically have a getTripleIntersection method...
+				       // Get the intersect of k and m, then get the intersect of that with e. Note that there is junk on the end of the one produced from the intersect, so a resize will be necessary.
+                         // first target data:
+                         vector < unsigned int> intersectForN1;
+                         unsigned int sizeOfIntersectForN1;
+                         
+                         getIntersection (childrenOfK,childrenOfM,sizeOfIntersectForN1,intersectForN1);
+                         intersectForN1.resize(sizeOfIntersectForN1);
+                         
+                         //Now the second target data:
+                         vector < unsigned int> intersectForN2;
+                         unsigned int sizeOfIntersectForN2;
+                         
+                         getIntersection (intersectForN1,childrenOfE,sizeOfIntersectForN2,intersectForN2);
+                         
+                         for (unsigned int iterN = 0; iterN < sizeOfIntersectForN2; iterN++)
+                         {
+                             frame[13] = intersectForN2[iterN];
+                             
+                             /////////////////////////// preparing for P ///////////////////////////////////
+                             vector <unsigned int> childrenOfI;
+                             getChildren (trees[frame[8]],childrenOfI);
+                             
+                             unsigned int JM = findBranch (trees[frame[9]],frame[12]);
+                             vector <unsigned int> childrenOfJM (trees[frame[9]][JM].second);
+                             
+                             
+                             //target:
+                             vector <unsigned int> intersectForP;
+                             unsigned int sizeOfIntersectForP;
+                             
+                             getIntersection (childrenOfI,childrenOfJM,sizeOfIntersectForP,intersectForP);
+                             
+                             for (unsigned int iterP = 0; iterP < sizeOfIntersectForP; iterP++)
+                             {
+                                 
+                                 frame[15] = intersectForP[iterP];
+                                 
+                                 outPutAll (frame,reverseDictionary);
+                             }
 
-				       outPutAll (frame,reverseDictionary);
+				       
+                         }
 				     }
 				     
 				}
