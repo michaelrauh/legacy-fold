@@ -20,7 +20,7 @@ typedef pair <unsigned int,intVector> intVectorPair;
 typedef vector <intVectorPair> top;
 typedef vector <top> tops;
 
-// declare a new vector and pass it in for intersect. Pass in children vectors, and a new size int. Size will will be the size of the intersect. Intersect will be the intersect vector. Don't trust the size of this vector. It has junk. Use size instead.
+// declare a new vector and pass it in for intersect. Pass in children vectors, and a new size int. Size will be the size of the intersect. Intersect will be the intersect vector. Don't trust the size of this vector. It has junk. Use size instead.
 void getIntersection (vector <unsigned int> & x, vector <unsigned int> & y, unsigned int & size, vector <unsigned int> & intersect)
 {
     
@@ -205,31 +205,8 @@ void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDi
     }
 }
 
-// procedure that gets the next value that passes a check against the perpindicular. framepos is the position in the frame of the data point being gotten. gotNext is a status that will be false if the root is exhausted. If it is successful, it will insert into the frame a word that "works" It takes a vector of children of one root, and a plain root from the other side to check against. This seems a bit lopsided though. Why not just take all of the children, run a set intersection (like for I) and do a for each over the set intersection? Seems simpler to me.
-void getNext(vector <unsigned int> & frame, vector<unsigned int> children, top & root,bool & gotNext,unsigned int & i, unsigned int framePos)
-{
-  while  (i < children.size() && doesNotContain (root,children[i]))
-    {
-      i++;
-    }
-  if (!(i < children.size()))
-    {
-      gotNext = false;
-    }
-  else if (i < children.size() && doesNotContain (root,children[i]))
-    {
-      gotNext = false;
-    }
-  else 
-    {
-      gotNext = true;
-      frame [framePos] = children[i];
-    }
-  i++;
-}
 
-
-// function returns int - the number of runs on a given root. Saves lots of computing with math!
+// function returns the number of runs on a given root. Saves lots of computing with math!
 unsigned int maximum (top root)
 {
   unsigned int grandchildren = 0;
@@ -240,14 +217,7 @@ unsigned int maximum (top root)
       grandchildren += root[i].second.size();
       i++;
     }
- // if (grandchildren == 1) // is this necessary? Test without this.
-   // {
-     // return 1;
-    //}
-  //else
-    //{
       return ((grandchildren * (grandchildren+1))/2);
-    //}
 }
 
 // procedure places into the frame new values, based upon main and sweep coordinates gotten from iterateCoordinates
@@ -281,7 +251,7 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
   
   loadDictionary (trees,dictionary);
   cout << "dictionary loaded"<<endl;
-  // can use fill constructor?
+  
   trees.resize(dictionary.size());
   for (unsigned int temp = 0;temp<dictionary.size();temp++)
     {
@@ -336,7 +306,7 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
 
 int main()
 {
-  vector <unsigned int> frame (9,1234578);
+  vector <unsigned int> frame (9,1234578); // here is an easy to recognize value, to indicate that a number was missed.
   map <unsigned int,string> reverseDictionary;
   tops trees;
   
@@ -386,10 +356,6 @@ int main()
       for (unsigned int pos = 0;pos < max; pos++)
         { 
           getNextFrame (current,root,frame,mainCoordinates,sweepCoordinates,ranBefore);/////////////////////////////////////////////
-          
-          
-          //  cout << "main: (" << mainCoordinates.first <<"," <<mainCoordinates.second <<")" << "  ";
-          //cout << "sweep: (" <<sweepCoordinates.first << "," <<sweepCoordinates.second <<")" << endl;
                    
           ///////////preparing to get
           ///////////E/////////////////////////////////////////////////////////////
