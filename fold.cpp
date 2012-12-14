@@ -12,6 +12,8 @@
 
 //Note : reused children vectors means that they are already sorted. They are being sorted again. This is a bit wasteful. It may be worth it to move sort out of getIntersection
 
+// Note: Constructors are slow. We are calling them a lot. May want to make children vectors global. Won't take much space.
+
 //  cout << (float) i /321135634 << '\r' << '\b'; // progress overwite
 //  percentage thingy
 
@@ -201,11 +203,13 @@ void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDi
     {
       cout << "////////////////"<<endl;
       
-      cout << reverseDictionary[frame[0]] << " " << reverseDictionary[frame[1]] << " " << reverseDictionary[frame[2]] << endl;
-      cout << reverseDictionary[frame[3]] << " " << reverseDictionary[frame[4]] << " " << reverseDictionary[frame[5]] << endl;
-      cout << reverseDictionary[frame[6]] << " " << reverseDictionary[frame[7]] << " " << reverseDictionary[frame[8]] << endl;
-      cout << endl;
-      cout << reverseDictionary[frame[10]] << " " << reverseDictionary[frame[13]] <<  endl;
+      cout << reverseDictionary[frame[0]] << " " << reverseDictionary[frame[1]] << " " << reverseDictionary[frame[2]] << endl; //abc
+      cout << reverseDictionary[frame[3]] << " " << reverseDictionary[frame[4]] << " " << reverseDictionary[frame[5]] << endl; //def
+      cout << reverseDictionary[frame[6]] << " " << reverseDictionary[frame[7]] << " " << reverseDictionary[frame[8]] << endl; //ghi
+      cout << endl; /////////////////
+      cout << reverseDictionary[frame[9]] << " " << endl; // jkl
+      cout <<  reverseDictionary[frame[12]] << " " << endl; // mno
+      cout << reverseDictionary[frame[15]] << " " << endl; // pqr
     }
 }
 
@@ -443,12 +447,12 @@ int main()
 			  // In this case, there is nothing to intersect against. Everything goes through. We used frames to speed through these before.
 			  for (unsigned int iterJ = 0; iterJ < childrenOfA.size();iterJ++)
 			    {
-			      frame[10] = childrenOfA[iterJ];
+			      frame[9] = childrenOfA[iterJ];
 
 			      ////////////////// preparing for M ////////////////////////////////////////////////////
 			      // We already have childrenOfD hanging out.
 			      vector <unsigned int> childrenOfJ;
-			      getChildren (trees[frame[10]],childrenOfJ);
+			      getChildren (trees[frame[9]],childrenOfJ);
 
 			      // declaring target data:
 			      vector <unsigned int> intersectForM;
@@ -458,9 +462,28 @@ int main()
 			  
 			      for (unsigned int iterM = 0; iterM < sizeOfIntersectForM; iterM++)
 				{
-				  frame[13] = intersectForM[iterM];
+				  frame[12] = intersectForM[iterM];
 			      
-				  outPutAll (frame,reverseDictionary);
+				  /////////////////////////// preparing for P ///////////////////////////////////
+				  vector <unsigned int> childrenOfI;
+				  getChildren (trees[frame[8]],childrenOfI);
+				  
+				   unsigned int JM = findBranch (trees[frame[9]],frame[12]);
+				   vector <unsigned int> childrenOfJM (trees[frame[9]][JM].second);
+
+
+				   //target:
+				   vector <unsigned int> intersectForP;
+				   unsigned int sizeOfIntersectForP;
+				   
+				   getIntersection (childrenOfI,childrenOfJM,sizeOfIntersectForP,intersectForP);
+
+				   for (unsigned int iterP = 0; iterP < sizeOfIntersectForP; iterP++)
+				     {
+
+				       	  frame[15] = intersectForP[iterP];
+				       outPutAll (frame,reverseDictionary);
+				     }
 				}
 			    }
 			} 
