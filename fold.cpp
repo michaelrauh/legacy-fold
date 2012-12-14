@@ -7,9 +7,6 @@
 #include <algorithm>
 #include <set>
 
-// To Do: make a getIntersection function.
-
-
 
 //populatechildrenforE is about to expand to just get children. Get grandchildren may be useful. It would have a call to find branch
 
@@ -64,7 +61,7 @@ bool doesNotContainLeaf (intVector & container, unsigned int & x)
 }
 
 // procedure that places branch members from root into vector for easy retrieval. Only used for E so far.
-void populateChildrenForE(top & root,vector <unsigned int> & children)
+void getChildren(top & root,vector <unsigned int> & children)
 {
 	for(unsigned int i = 0;i<root.size();i++)
 	{
@@ -402,7 +399,7 @@ int main()
           top rootB = trees[frame[1]];
           top rootD = trees[frame[3]];
           
-          populateChildrenForE(rootB,children); // gets the children of root B. That is, possible values for e from the perspective of B.
+          getChildren(rootB,children); // gets the children of root B. That is, possible values for e from the perspective of B.
           
           while (gotNextE)
             {
@@ -429,25 +426,25 @@ int main()
 
                           // we need the de children.
                           unsigned int de = findBranch (rootD,frame[4]);
-
                           vector <unsigned int> childrenOfDE (rootD[de].second);
-
+                            
+                          //now we need the children of C
                           top rootC = trees[frame[2]];
-                          bool gotNextF = true;
-                          unsigned int iterF =0;
+                            vector <unsigned int> childrenOfC;
+                            getChildren (rootC,childrenOfC);
+                            
+                            //Now here are the target variables:
+                            vector <unsigned int> intersectForF;
+                            unsigned int sizeOfIntersectForF;
+                            
+                            getIntersection (childrenOfDE,childrenOfC,sizeOfIntersectForF,intersectForF);
 
-                          while (gotNextF)
+                            for (unsigned int iterF = 0; iterF<sizeOfIntersectForF; iterF++)
                             {
-                              getNext (frame,childrenOfDE,rootC,gotNextF,iterF,5);
-
-                              if (gotNextF)
-                                {
+                                frame[5] = intersectForF[iterF]; // assign F, then go on to get possible I values
 
                                   ////////////preparing for//////////
                                   ////////////I  //////////////////////////////////////
-
-                                    
-                                    // get the children vectors, sort them, determine which is larger,make an intersection destination vector, and get the set intersection with iterator. Then calculate a results size.  All of this can be pushed to a function. After the function, a for loop bound is had, and an intersection vector exists to for over.  The issue is in setting the destination for what vector is being gotten, as some are children, and some are grandchildren. In terms of design, it may be better to pass in the vectors already done.
                                     
                                   // we need the cf children
                                   unsigned int cf = findBranch (rootC,frame[5]);
@@ -457,8 +454,10 @@ int main()
                                   unsigned int gh = findBranch (rootG,frame[7]);
                                   vector <unsigned int> childrenOfGH (rootG[gh].second);
                                     
+                                    // Here are the data the we get from getIntersection
                                     vector <unsigned int> intersectForI;
                                     unsigned int sizeOfIntersectForI;
+                                    
                                     getIntersection (childrenOfCF, childrenOfGH, sizeOfIntersectForI, intersectForI);
                                   
                                     for (unsigned int iteri = 0;iteri < sizeOfIntersectForI;iteri++) // for each item in the intersection
@@ -467,7 +466,6 @@ int main()
                                      
                                       outPutAll (frame,reverseDictionary);
                                     } 
-                                }
                             }
                         }
                     }
