@@ -393,22 +393,26 @@ int main()
                    
           ///////////preparing to get
           ///////////E/////////////////////////////////////////////////////////////
-          vector <unsigned int> children;
-          unsigned int iterE = 0;
-          bool gotNextE = true;
+          vector <unsigned int> childrenOfB;
+            vector <unsigned int> childrenOfD;
+            
           top rootB = trees[frame[1]];
           top rootD = trees[frame[3]];
           
-          getChildren(rootB,children); // gets the children of root B. That is, possible values for e from the perspective of B.
+          getChildren(rootB,childrenOfB); // gets the children of root B. That is, possible values for e from the perspective of B.
+            getChildren (rootD,childrenOfD);
+            
+           // variables to be filled by intersect:
+            vector <unsigned int> intersectForE;
+            unsigned int sizeOfIntersectForE;
+            
+            getIntersection (childrenOfB,childrenOfD,sizeOfIntersectForE,intersectForE);
           
-          while (gotNextE)
+            for (unsigned int iterE = 0; iterE < sizeOfIntersectForE; iterE++)
             {
               
-              getNext (frame,children,rootD,gotNextE,iterE,4); // edits frame at position 4, by iterating iterE over children, and checking to see if they are children of rootD. If they are, gotNextE is true. It will continue to search until children is exhausted or until gotNextE is true though. - design note : What is to prevent just finding the intersection of these sets of children, and then iterating over that intersection? All that really matters is what is in the frame. Once the frame is gotten, you go to the next round. You just have to make sure you don't go past where you are trying to go. This can be avoided by essentially doing a for each. 
-              
-              if (gotNextE)
-                {
-                  //we need the BE children
+                frame[4] = intersectForE[iterE];
+                //we need the BE children
                   unsigned int e = findBranch (rootB,frame[4]);
                   vector <unsigned int> childrenOfBE (rootB[e].second);
                   
@@ -475,7 +479,7 @@ int main()
                             }
                         }
                     }
-            }
+            
         }
     }
   cout << "search complete\n";
