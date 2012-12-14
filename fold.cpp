@@ -8,7 +8,7 @@
 #include <set>
 
 
-//populatechildrenforE is about to expand to just get children. Get grandchildren may be useful. It would have a call to find branch
+// Bear in mind that there are preserved temp variables in here for readability. We can get rid of these directly before doing the release compile. Then future upgrades can come from the version with the temps.
 
 //  cout << (float) i /321135634 << '\r' << '\b'; // progress overwite
 //  percentage thingy
@@ -336,7 +336,7 @@ int main()
    cout << "number of iterations: " << trees.size()<<endl;
   for  (unsigned int current = 0;current < trees.size();current++)
     { 
-      //   cout << "current: "<< current<<endl;
+      //   cout << "current: "<< current<<endl; // rough idea of progress. Very jumpy.
       pair <unsigned int, unsigned int> mainCoordinates;
       pair <unsigned int,unsigned int> sweepCoordinates;
       
@@ -344,15 +344,10 @@ int main()
       mainCoordinates.second = 0;
       sweepCoordinates = mainCoordinates;
       
-      // cout<< "////////////////////////////"<<endl;
-      //  cout <<"current: " <<current <<endl;
-      
       top root = trees[current];
       unsigned int max = maximum (root);
-      // cout <<" max " <<max<<endl;
       bool ranBefore = false;
-      // cout << "max: " <<max<<endl;
-      //  cout << "root: "<<reverseDictionary [current]<<endl;
+     
       for (unsigned int pos = 0;pos < max; pos++)
         { 
           getNextFrame (current,root,frame,mainCoordinates,sweepCoordinates,ranBefore);/////////////////////////////////////////////
@@ -361,12 +356,9 @@ int main()
           ///////////E/////////////////////////////////////////////////////////////
           vector <unsigned int> childrenOfB;
             vector <unsigned int> childrenOfD;
-            
-          top rootB = trees[frame[1]];
-          top rootD = trees[frame[3]];
           
-          getChildren(rootB,childrenOfB); // gets the children of root B. That is, possible values for e from the perspective of B.
-            getChildren (rootD,childrenOfD);
+          getChildren(trees[frame[1]],childrenOfB); // gets the children of root B.
+            getChildren (trees[frame[3]],childrenOfD); // gets the children of root D.
             
            // variables to be filled by intersect:
             vector <unsigned int> intersectForE;
@@ -379,13 +371,12 @@ int main()
               
                 frame[4] = intersectForE[iterE];
                 //we need the BE children
-                  unsigned int e = findBranch (rootB,frame[4]);
-                  vector <unsigned int> childrenOfBE (rootB[e].second);
+                  unsigned int e = findBranch (trees[frame[1]],frame[4]);
+                  vector <unsigned int> childrenOfBE (trees[frame[1]][e].second);
                   
                     // we also need the children of G
-                  top rootG = trees[frame[6]];
                     vector <unsigned int> childrenOfG;
-                    getChildren (rootG,childrenOfG);
+                    getChildren (trees[frame[6]],childrenOfG);
                     
                     // variables to be filled by intersect:
                     vector <unsigned int> intersectForH;
@@ -401,13 +392,12 @@ int main()
                           ////////////F//////////////////////////////
 
                           // we need the de children.
-                          unsigned int de = findBranch (rootD,frame[4]);
-                          vector <unsigned int> childrenOfDE (rootD[de].second);
+                          unsigned int de = findBranch (trees[frame[3]],frame[4]);
+                          vector <unsigned int> childrenOfDE (trees[frame[3]][de].second);
                             
                           //now we need the children of C
-                          top rootC = trees[frame[2]];
                             vector <unsigned int> childrenOfC;
-                            getChildren (rootC,childrenOfC);
+                            getChildren (trees[frame[2]],childrenOfC);
                             
                             //Now here are the target variables:
                             vector <unsigned int> intersectForF;
@@ -423,12 +413,12 @@ int main()
                                   ////////////I  //////////////////////////////////////
                                     
                                   // we need the cf children
-                                  unsigned int cf = findBranch (rootC,frame[5]);
-                                  vector <unsigned int> childrenOfCF (rootC[cf].second); // fancy copy constructor. C++ is incredible.
+                                  unsigned int cf = findBranch (trees[frame[2]],frame[5]);
+                                  vector <unsigned int> childrenOfCF (trees[frame[2]][cf].second); // fancy copy constructor. C++ is incredible.
 
                                   // we need the gh children
-                                  unsigned int gh = findBranch (rootG,frame[7]);
-                                  vector <unsigned int> childrenOfGH (rootG[gh].second);
+                                  unsigned int gh = findBranch (trees[frame[6]],frame[7]);
+                                  vector <unsigned int> childrenOfGH (trees[frame[6]][gh].second);
                                     
                                     // Here are the data the we get from getIntersection
                                     vector <unsigned int> intersectForI;
