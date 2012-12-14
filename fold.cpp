@@ -344,13 +344,12 @@ int main()
       mainCoordinates.second = 0;
       sweepCoordinates = mainCoordinates;
       
-      top root = trees[current];
-      unsigned int max = maximum (root);
+      unsigned int max = maximum (trees[current]);
       bool ranBefore = false;
      
       for (unsigned int pos = 0;pos < max; pos++)
         { 
-          getNextFrame (current,root,frame,mainCoordinates,sweepCoordinates,ranBefore);/////////////////////////////////////////////
+          getNextFrame (current,trees[current],frame,mainCoordinates,sweepCoordinates,ranBefore);/////////////////////////////////////////////
                    
           ///////////preparing to get
           ///////////E/////////////////////////////////////////////////////////////
