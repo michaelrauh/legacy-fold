@@ -455,7 +455,7 @@ int main()
 			      unsigned int sizeOfIntersectForM;
 
 			      getIntersection (childrenOfD,childrenOfJ,sizeOfIntersectForM,intersectForM);
-			      cout << "hit";
+			  
 			      for (unsigned int iterM = 0; iterM < sizeOfIntersectForM; iterM++)
 				{
 				  frame[13] = intersectForM[iterM];
