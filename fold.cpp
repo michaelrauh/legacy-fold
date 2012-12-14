@@ -10,6 +10,8 @@
 
 // Bear in mind that there are preserved temp variables in here for readability. We can get rid of these directly before doing the release compile. Then future upgrades can come from the version with the temps.
 
+//Note : reused children vectors means that they are already sorted. They are being sorted again. This is a bit wasteful. It may be worth it to move sort out of getIntersection
+
 //  cout << (float) i /321135634 << '\r' << '\b'; // progress overwite
 //  percentage thingy
 
@@ -180,13 +182,13 @@ void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDi
   multiset <int> words;
   bool repeat = false;
   
-  for (unsigned int i=0;i</*frame.size()*/10;i++)
+  for (unsigned int i=0;i</*frame.size()*/11;i++)
     {
       words.insert(frame[i]);
     }
   
   unsigned int iter =0;
-  while (iter</*frame.size()*/10 && (!repeat))
+  while (iter</*frame.size()*/11 && (!repeat))
     {
       if (words.count (frame[iter]) > 1)
         {
@@ -203,7 +205,7 @@ void outPutAll(vector<unsigned int> frame, map <unsigned int,string> & reverseDi
       cout << reverseDictionary[frame[3]] << " " << reverseDictionary[frame[4]] << " " << reverseDictionary[frame[5]] << endl;
       cout << reverseDictionary[frame[6]] << " " << reverseDictionary[frame[7]] << " " << reverseDictionary[frame[8]] << endl;
       cout << endl;
-      cout << reverseDictionary[frame[10]] << endl;
+      cout << reverseDictionary[frame[10]] << " " << reverseDictionary[frame[13]] <<  endl;
     }
 }
 
@@ -443,7 +445,23 @@ int main()
 			    {
 			      frame[10] = childrenOfA[iterJ];
 
-			      outPutAll (frame,reverseDictionary);
+			      ////////////////// preparing for M ////////////////////////////////////////////////////
+			      // We already have childrenOfD hanging out.
+			      vector <unsigned int> childrenOfJ;
+			      getChildren (trees[frame[10]],childrenOfJ);
+
+			      // declaring target data:
+			      vector <unsigned int> intersectForM;
+			      unsigned int sizeOfIntersectForM;
+
+			      getIntersection (childrenOfD,childrenOfJ,sizeOfIntersectForM,intersectForM);
+			      cout << "hit";
+			      for (unsigned int iterM = 0; iterM < sizeOfIntersectForM; iterM++)
+				{
+				  frame[13] = intersectForM[iterM];
+			      
+				  outPutAll (frame,reverseDictionary);
+				}
 			    }
 			} 
 		    }
