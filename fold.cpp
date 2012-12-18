@@ -418,10 +418,11 @@ int main()
     
     cout << "begin search phase"<<endl;
     //cout << "number of iterations: " << trees.size()<<endl;
-    for  (unsigned int current = 0;current < trees.size();current++)
-    {
+   // for  (unsigned int current = 0;current < trees.size();current++)
+    //{
+    unsigned int current = dictionary["the"];
         getSquare (current,frame,reverseDictionary,trees);
-    }
+    //}
     cout << "search complete\n";
     return 0;
 }
