@@ -240,11 +240,11 @@ void getNextFrame (unsigned int & current,top & root,vector <unsigned int> & fra
 
 
 // prepares for the search phase. Includes creation of necessary data structures from stream, and population of dictionaries.
-void load (tops & trees,  map <unsigned int,string> &  reverseDictionary)
+void load (tops & trees,  map <unsigned int,string> &  reverseDictionary, map <string,unsigned int>  &dictionary)
 {
     fstream in; in.open ("input.txt",fstream::in); // open the stream
     string word,oneBack,twoBack; // incoming strings
-    map <string,unsigned int>  dictionary; // keeps the numbers of the strings
+   
     
     loadDictionary (trees,dictionary);
     cout << "dictionary loaded"<<endl;
@@ -410,9 +410,10 @@ int main()
 {
     vector <unsigned int> frame (9,1234578); // here is an easy to recognize value, to indicate that a number was missed.
     map <unsigned int,string> reverseDictionary;
+    map <string,unsigned int>  dictionary;
     tops trees;
     
-    load (trees,reverseDictionary);
+    load (trees,reverseDictionary,dictionary);
 
     
     cout << "begin search phase"<<endl;
