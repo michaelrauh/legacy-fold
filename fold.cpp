@@ -302,8 +302,9 @@ void load (tops & trees,  map <unsigned int,string> &  reverseDictionary, map <s
     reverseEntries (dictionary,reverseDictionary);
 }
 
-void getSquare (unsigned int current, vector <unsigned int> & frame, map <unsigned int, string> &reverseDictionary, tops & trees)
+void getSquare (unsigned int current, map <unsigned int, string> &reverseDictionary, tops & trees, vector <vector <unsigned int> > & rootResults)
 {
+    
     //   cout << "current: "<< current<<endl; // rough idea of progress. Very jumpy.
     pair <unsigned int, unsigned int> mainCoordinates;
     pair <unsigned int,unsigned int> sweepCoordinates;
@@ -317,6 +318,7 @@ void getSquare (unsigned int current, vector <unsigned int> & frame, map <unsign
     
     for (unsigned int pos = 0;pos < max; pos++)
     {
+        vector <unsigned int> frame (9,1234578);
         getNextFrame (current,trees[current],frame,mainCoordinates,sweepCoordinates,ranBefore);/////////////////////////////////////////////
         
         ///////////preparing to get
@@ -397,7 +399,11 @@ void getSquare (unsigned int current, vector <unsigned int> & frame, map <unsign
                     {
                         frame[8] = intersectForI[iteri];
                         
-                        outPutAll (frame,reverseDictionary);
+                        //outPutAll (frame,reverseDictionary); // This is for stopping at the squares for a simple readout
+                        
+                        //Here we will push the frame back into a results vector. This is why we moved the frame declaration to a lower scope
+                        rootResults.push_back(frame);
+                        
                     }
                 }
             }
@@ -406,23 +412,124 @@ void getSquare (unsigned int current, vector <unsigned int> & frame, map <unsign
     
 }
 
+bool lineUp (unsigned int &x, unsigned int & y, unsigned int &z, tops &trees)
+{
+    // first to see if y is a branch on x
+    unsigned int i = 0;
+    
+    while (trees[x][i].first != x && i != trees[x].size())
+    {
+        i++;
+    }
+    if (i == trees[x].size())
+    {
+        return false;
+    }
+    
+    // If we make it down here we can assume that i is the branch value
+    //trees[x][i].second is the grandchildren vector
+    
+    return (find (trees[x][i].second.begin(),trees[x][i].second.end(),z) != trees[x][i].second.end());
+    
+    
+}
+
+bool check (vector <unsigned int> &first, vector <unsigned int> &second, vector <unsigned int> &third, tops &trees)
+{
+    //first[0] second [0] third[0] and so on need to exist
+    for (unsigned int i=0;i<9;i++)
+    {
+        if (!lineUp (first[i],second[i],third[i],trees))
+        {
+            return false;
+        }
+    }
+    return true;
+    
+}
+
 int main()
 {
-    vector <unsigned int> frame (9,1234578); // here is an easy to recognize value, to indicate that a number was missed.
+    
     map <unsigned int,string> reverseDictionary;
     map <string,unsigned int>  dictionary;
     tops trees;
+    vector <vector <unsigned int> > frameOneRootResults;
+    vector <vector <unsigned int> > frameTwoRootResults;
+    vector <vector <unsigned int> > frameThreeRootResults;
+    string inputWord;
+    
+    inputWord = "the"; // this will be input by the user
     
     load (trees,reverseDictionary,dictionary);
 
     
-    cout << "begin search phase"<<endl;
-    //cout << "number of iterations: " << trees.size()<<endl;
-   // for  (unsigned int current = 0;current < trees.size();current++)
-    //{
-    unsigned int current = dictionary["the"];
-        getSquare (current,frame,reverseDictionary,trees);
-    //}
+    cout << "get the first panes" << endl;
+        getSquare (dictionary[inputWord],reverseDictionary,trees, frameOneRootResults);
+    
+    // Now to get the squares of the children of the given word
+     vector <unsigned int> children;
+    getChildren (trees[dictionary[inputWord]], children); // giving the full tree of the input word to get the children
+    
+    cout << "get the second panes" << endl;
+    // So now we get the squares for every child root
+    for (unsigned int bad = 0; bad< children.size();bad++)
+    {
+        getSquare (children[bad],reverseDictionary,trees, frameTwoRootResults);
+    }
+    
+    // Here we get the grandchildren
+    vector<unsigned int> grandchildren;
+    
+    // Could use set union instead. I admit I made this as obtuse as possible
+    for (unsigned int temptempnum = 0; temptempnum < trees[dictionary[inputWord]].size();temptempnum++)
+    {
+        //trees[dictionary[inputWord]][temptempnum].second; refers to a vector of grandchildren We need to union all of these
+        for (unsigned int temptempnumnum = 0;temptempnumnum < trees[dictionary[inputWord]][temptempnum].second.size();temptempnumnum++)
+        {
+            // I know this is hideous. Search from beginning to end for the element. If it is not found, put it in.
+            if (!(find (grandchildren.begin(),grandchildren.end(),trees[dictionary[inputWord]][temptempnum].second[temptempnumnum]) != grandchildren.end()));
+            {
+                grandchildren.push_back (trees[dictionary[inputWord]][temptempnum].second[temptempnumnum]);
+                
+            }
+        }
+        
+    }
+    
+    cout << "get the third panes" <<endl;
+    // Finally we can get the grandchildren root results
+    for (unsigned int terrible = 0; terrible< grandchildren.size();terrible++)
+    {
+        //cout << terrible << "   " << grandchildren.size() <<endl;
+        getSquare (grandchildren[terrible],reverseDictionary,trees, frameThreeRootResults);
+    }
+    
+    cout << "stack the squares" <<endl;
+   // Now that we have all of the panes, we just have to do a shuffle of them. This will be a triple loop
+    
+    for (unsigned int a=0;a<frameOneRootResults.size();a++)
+    {
+        for (unsigned int b=0;b<frameTwoRootResults.size();b++)
+        {
+            for (unsigned int c=0;c<frameThreeRootResults.size();c++) //LOL
+            {
+               if  (check (frameOneRootResults[a],frameTwoRootResults[b],frameThreeRootResults[c],trees)) // This will check to see if these squares stack
+               {
+                   outPutAll (frameOneRootResults[a],reverseDictionary);
+                   cout << endl;
+                   outPutAll (frameTwoRootResults[b],reverseDictionary);
+                   cout << endl;
+                   outPutAll (frameThreeRootResults[c],reverseDictionary);
+                   cout << endl;
+                   cout << "/////////////"<<endl;
+                   
+               }
+            }
+            
+        }
+    }
+    
     cout << "search complete\n";
     return 0;
 }
