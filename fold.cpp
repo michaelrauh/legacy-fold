@@ -524,7 +524,7 @@ int main()
         //cout << terrible << "   " << grandchildren.size() <<endl;
         getSquare (grandchildren[terrible],reverseDictionary,trees, frameThreeRootResults);
     }
-    
+
     cout << "stack the squares" <<endl;
    // Now that we have all of the panes, we just have to do a shuffle of them. This will be a triple loop
     
@@ -539,13 +539,67 @@ int main()
             {
                if  (checkTwo (frameOneRootResults[a],frameTwoRootResults[b],frameThreeRootResults[c],trees)) // This seems to be giving a false positive
                {
-                   outPutAll (frameOneRootResults[a],reverseDictionary);
-                   cout << endl;
-                   outPutAll (frameTwoRootResults[b],reverseDictionary);
-                   cout << endl;
-                   outPutAll (frameThreeRootResults[c],reverseDictionary);
-                   cout << endl;
-                   cout << "/////////////"<<endl;
+                   // Check for repeats. This could be more efficient.
+                   bool junk;
+                   vector <unsigned int> test;
+                   
+                   for (unsigned int temp =0;temp<9;temp++)
+                   {
+                       test.push_back (frameOneRootResults[a][temp]);
+                       test.push_back (frameTwoRootResults[a][temp]);
+                       test.push_back (frameTwoRootResults[a][temp]);
+                   }
+                   sort (test.begin(),test.end());
+                   
+                   vector<unsigned int>::iterator it;
+                   
+                   it = unique (test.begin(),test.end());
+                   
+                   test.resize( it - test.begin() );
+                   
+                   junk = (test.size() !=27);
+                   
+                   if (!junk)
+                   {
+                   cout << " "<<reverseDictionary[frameOneRootResults[a][0]];
+                   cout << " " << reverseDictionary[frameOneRootResults[a][1]];
+                   cout <<" " << reverseDictionary[frameOneRootResults[a][2]];
+                   cout <<endl;
+                   cout << " "<<reverseDictionary[frameOneRootResults[a][3]];
+                   cout << " "<<reverseDictionary[frameOneRootResults[a][4]];
+                   cout << " "<<reverseDictionary[frameOneRootResults[a][5]];
+                   cout <<endl;
+                   cout << " "<<reverseDictionary[frameOneRootResults[a][6]];
+                   cout << " "<<reverseDictionary[frameOneRootResults[a][7]];
+                   cout << " "<<reverseDictionary[frameOneRootResults[a][8]];
+                   cout <<endl;
+                   cout << " "<<reverseDictionary[frameTwoRootResults[b][0]];
+                   cout << " " << reverseDictionary[frameTwoRootResults[b][1]];
+                   cout <<" " << reverseDictionary[frameTwoRootResults[b][2]];
+                   cout <<endl;
+                   cout << " "<<reverseDictionary[frameTwoRootResults[b][3]];
+                   cout << " "<<reverseDictionary[frameTwoRootResults[b][4]];
+                   cout << " "<<reverseDictionary[frameTwoRootResults[b][5]];
+                   cout <<endl;
+                   cout << " "<<reverseDictionary[frameTwoRootResults[b][6]];
+                   cout << " "<<reverseDictionary[frameTwoRootResults[b][7]];
+                   cout << " "<<reverseDictionary[frameTwoRootResults[b][8]];
+                   cout <<endl;
+                   cout << " "<<reverseDictionary[frameThreeRootResults[c][0]];
+                   cout << " " << reverseDictionary[frameThreeRootResults[c][1]];
+                   cout <<" " << reverseDictionary[frameThreeRootResults[c][2]];
+                   cout <<endl;
+                   cout << " "<<reverseDictionary[frameThreeRootResults[c][3]];
+                   cout << " "<<reverseDictionary[frameThreeRootResults[c][4]];
+                   cout << " "<<reverseDictionary[frameThreeRootResults[c][5]];
+                   cout <<endl;
+                   cout << " "<<reverseDictionary[frameThreeRootResults[c][6]];
+                   cout << " "<<reverseDictionary[frameThreeRootResults[c][7]];
+                   cout << " "<<reverseDictionary[frameThreeRootResults[c][8]];
+                   cout <<endl<<endl;
+                   }
+                   
+                   
                    
                }
             }
