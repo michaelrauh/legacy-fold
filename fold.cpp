@@ -412,34 +412,31 @@ void getSquare (unsigned int current, map <unsigned int, string> &reverseDiction
     
 }
 
-bool lineUp (unsigned int &x, unsigned int & y, unsigned int &z, tops &trees)
+bool lineUp (unsigned int &x, unsigned int & y, tops &trees)
 {
     // first to see if y is a branch on x
     unsigned int i = 0;
     
-    while (trees[x][i].first != x && i != trees[x].size())
+    while (trees[x][i].first != y && i != trees[x].size()) // looking to see if y is ever a child of x
     {
         i++;
     }
-    if (i == trees[x].size())
-    {
-        return false;
-    }
+    return ((i == trees[x].size())); //should there be a not here? Pretty sure there should be but here is the possible bug
     
     // If we make it down here we can assume that i is the branch value
     //trees[x][i].second is the grandchildren vector
     
-    return (find (trees[x][i].second.begin(),trees[x][i].second.end(),z) != trees[x][i].second.end());
+   // return (find (trees[x][i].second.begin(),trees[x][i].second.end(),z) != trees[x][i].second.end());
     
     
 }
 
-bool check (vector <unsigned int> &first, vector <unsigned int> &second, vector <unsigned int> &third, tops &trees)
+bool check (vector <unsigned int> &first, vector <unsigned int> &second, tops &trees)
 {
     //first[0] second [0] third[0] and so on need to exist
     for (unsigned int i=0;i<9;i++)
     {
-        if (!lineUp (first[i],second[i],third[i],trees))
+        if (!lineUp (first[i],second[i],trees))
         {
             return false;
         }
@@ -447,6 +444,29 @@ bool check (vector <unsigned int> &first, vector <unsigned int> &second, vector 
     return true;
     
 }
+
+bool lineUpTwo (unsigned int &x, unsigned int & y, unsigned int &z, tops &trees)
+{
+    unsigned int i= findBranch (trees[x],y); // finding where y is a branch on x
+    
+    return (find (trees[x][i].second.begin(),trees[x][i].second.end(),z) != trees[x][i].second.end()); // z is a child of xy
+    
+}
+
+bool checkTwo (vector <unsigned int> &first, vector <unsigned int> &second, vector<unsigned int> &third, tops &trees)
+{
+    for (unsigned int i=0;i<9;i++)
+    {
+        if (!lineUpTwo (first[i],second[i], third[i],trees))
+        {
+            return false;
+        }
+    }
+    return true;
+    
+}
+
+
 
 int main()
 {
@@ -513,10 +533,11 @@ int main()
         cout << a<< ": "<<frameOneRootResults.size() << endl;
         for (unsigned int b=0;b<frameTwoRootResults.size();b++)
         {
-            cout << b<< ": "<<frameTwoRootResults.size() << endl;
+            if  (check (frameOneRootResults[a],frameTwoRootResults[b],trees)) // This will check to see if these squares stack
+            {
             for (unsigned int c=0;c<frameThreeRootResults.size();c++) //LOL
             {
-               if  (check (frameOneRootResults[a],frameTwoRootResults[b],frameThreeRootResults[c],trees)) // This will check to see if these squares stack
+               if  (checkTwo (frameOneRootResults[a],frameTwoRootResults[b],frameThreeRootResults[c],trees)) // This will check to see if these squares stack
                {
                    outPutAll (frameOneRootResults[a],reverseDictionary);
                    cout << endl;
@@ -528,7 +549,7 @@ int main()
                    
                }
             }
-            
+            }
         }
     }
     
