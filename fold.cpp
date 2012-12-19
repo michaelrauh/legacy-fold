@@ -510,8 +510,10 @@ int main()
     
     for (unsigned int a=0;a<frameOneRootResults.size();a++)
     {
+        cout << a<< ": "<<frameOneRootResults.size() << endl;
         for (unsigned int b=0;b<frameTwoRootResults.size();b++)
         {
+            cout << b<< ": "<<frameTwoRootResults.size() << endl;
             for (unsigned int c=0;c<frameThreeRootResults.size();c++) //LOL
             {
                if  (check (frameOneRootResults[a],frameTwoRootResults[b],frameThreeRootResults[c],trees)) // This will check to see if these squares stack
