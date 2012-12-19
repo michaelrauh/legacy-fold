@@ -421,7 +421,7 @@ bool lineUp (unsigned int &x, unsigned int & y, tops &trees)
     {
         i++;
     }
-    return ((i == trees[x].size())); //should there be a not here? Pretty sure there should be but here is the possible bug
+    return (!(i == trees[x].size())); //This will be true if it is found, and there is a lineup
     
     // If we make it down here we can assume that i is the branch value
     //trees[x][i].second is the grandchildren vector
@@ -449,7 +449,7 @@ bool lineUpTwo (unsigned int &x, unsigned int & y, unsigned int &z, tops &trees)
 {
     unsigned int i= findBranch (trees[x],y); // finding where y is a branch on x
     
-    return (find (trees[x][i].second.begin(),trees[x][i].second.end(),z) != trees[x][i].second.end()); // z is a child of xy
+    return ((find (trees[x][i].second.begin(),trees[x][i].second.end(),z) != trees[x][i].second.end())); // returns true if it is found. That is, true if there is a lineup
     
 }
 
@@ -533,11 +533,11 @@ int main()
         cout << a<< ": "<<frameOneRootResults.size() << endl;
         for (unsigned int b=0;b<frameTwoRootResults.size();b++)
         {
-            if  (check (frameOneRootResults[a],frameTwoRootResults[b],trees)) // This will check to see if these squares stack
+            if  (check (frameOneRootResults[a],frameTwoRootResults[b],trees)) // This will check to see if these squares stack. It seems to work, as you can assume that the branch in question is there after.
             {
             for (unsigned int c=0;c<frameThreeRootResults.size();c++) //LOL
             {
-               if  (checkTwo (frameOneRootResults[a],frameTwoRootResults[b],frameThreeRootResults[c],trees)) // This will check to see if these squares stack
+               if  (checkTwo (frameOneRootResults[a],frameTwoRootResults[b],frameThreeRootResults[c],trees)) // This seems to be giving a false positive
                {
                    outPutAll (frameOneRootResults[a],reverseDictionary);
                    cout << endl;
