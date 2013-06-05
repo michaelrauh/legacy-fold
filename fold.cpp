@@ -479,7 +479,7 @@ int main()
     vector <vector <unsigned int> > frameThreeRootResults;
     string inputWord;
     
-    inputWord = "the"; // this will be input by the user
+    inputWord = "God"; // this will be input by the user
     
     load (trees,reverseDictionary,dictionary);
 
@@ -550,7 +550,7 @@ int main()
                        test.push_back (frameTwoRootResults[a][temp]);
                    }
                    sort (test.begin(),test.end());
-                   
+                
                    vector<unsigned int>::iterator it;
                    
                    it = unique (test.begin(),test.end());
