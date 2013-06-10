@@ -18,10 +18,10 @@ namespace fold
         {
             get 
             {
-               /* if (string.IsNullOrEmpty(index))
+                if (string.IsNullOrEmpty(index))
                 {
-                    throw new ArgumentNullException("index"); // need to develop way to get rid of empties.As it is, it manifests as a blank in output
-                }*/
+                    throw new ArgumentNullException("index");
+                }
                 if (data.ContainsKey(index))
                 {
                 return data[index]; 
@@ -57,7 +57,7 @@ namespace fold
         }
         public void load()
         {
-            string[] words = System.IO.File.ReadAllText(@"C:\Users\Owner\Desktop\mars.txt").Split(' ');
+            string[] words = System.IO.File.ReadAllText(@"C:\Users\Owner\Desktop\mars.txt").Replace('\n', ' ').Replace('\t', ' ').Split(' ');
             for (int i = 0; i < words.Length; i++)
             {
                 if (!data.ContainsKey(words[i])) // if the top is missing
