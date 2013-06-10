@@ -65,16 +65,13 @@ namespace fold
 
                                             foreach (string i in allIValues)
                                             {
-                                                string[] results = new[] {a,b,c,d,e,f,g,h,i};
-                                                var duplicates = results.GroupBy(s => s).Where(x => x.Count() > 1).Select(x => x.Key);
+                                                string[] results = new[] {a," ",b," ",c,"\n",d," ",e," ",f,"\n",g," ",h," ",i,"\n"};
+                                                string result = string.Concat(results);
+                                                bool goodResult = (b != d && c != e && e != g && c != g && f != h);
 
-                                                if (duplicates.Count()==0)
+                                                if (goodResult)
                                                 {
-                                                    foreach (string str in results)
-                                                    {
-                                                        System.Console.WriteLine(str);
-                                                    }
-                                                    System.Console.WriteLine("////////////");
+                                                    System.Console.WriteLine(result);
                                                 }
                                             }
                                         }
