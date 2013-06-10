@@ -14,66 +14,60 @@ namespace fold
             timer.Start();
             var trees = new Trees();
             trees.load();
-
-            SortedDictionary<string, SortedDictionary<string, SortedSet<string>>>.KeyCollection aKeys = trees.Data.Keys;
+            
+            var aKeys = trees.Data.Keys;
 
             foreach (string a in aKeys) // each of the roots
             {
-                SortedDictionary<string, SortedSet<string>>.KeyCollection bdKeys = trees.Data[a].Keys;
-                string[] childrenOfA = bdKeys.ToArray<string>();
+                var childrenOfA = trees[a];
+                string[] childrenOfAKeys = childrenOfA.Keys.ToArray<string>();
+                int childrenOfASize = childrenOfAKeys.Length;
 
-                for (int currentB = 0; currentB < bdKeys.Count; currentB++) // for each child of a (b)
+                for (int currentB = 0; currentB < childrenOfASize; currentB++) // for each child of a (b)
                 {
-                    for (int currentD = currentB; currentD < bdKeys.Count; currentD++) //for each unused child of a (d)
+                    for (int currentD = currentB; currentD < childrenOfASize; currentD++) //for each unused child of a (d)
                     {
-                        string b = childrenOfA[currentB];
-                        string d = childrenOfA[currentD];
-                        SortedDictionary<string, SortedSet<string>> childrenOfB = trees.Data[b];
-                        SortedDictionary<string, SortedSet<string>> childrenOfD = trees.Data[d];
-
-                        SortedDictionary<string, SortedSet<string>>.KeyCollection childrenOfBKeys = childrenOfB.Keys;
-                        SortedDictionary<string, SortedSet<string>>.KeyCollection childrenOfDKeys = childrenOfD.Keys;
-
+                        string b = childrenOfAKeys[currentB];
+                        string d = childrenOfAKeys[currentD];
+                        var childrenOfB = trees[b];
+                        var childrenOfD = trees[d];
+                        var childrenOfBKeys = childrenOfB.Keys;
+                        var childrenOfDKeys = childrenOfD.Keys;
                         var allEValues = childrenOfBKeys.Intersect(childrenOfDKeys);
 
                         foreach (string e in allEValues) // for each e value (child of b and d)
                         {
-                            SortedSet<string> allGValues = trees.Data[a][d];
+                            var allGValues = childrenOfA[d];
 
                             foreach (string g in allGValues) // for each g value (child of ad)
                             {
-                                SortedSet <string> childrenOfBE = trees.Data[b][e];
-
-                                SortedDictionary<string, SortedSet<string>> childrenOfG = trees.Data[g];
-                                SortedDictionary<string, SortedSet<string>>.KeyCollection childrenOfGKeys = childrenOfG.Keys;
-
+                                var childrenOfBE = childrenOfB[e];
+                                var childrenOfG = trees[g];
+                                var childrenOfGKeys = childrenOfG.Keys;
                                 var allHValues = childrenOfGKeys.Intersect(childrenOfBE);
 
                                 foreach (string h in allHValues) //for each h value (child of be and g)
                                 {
-                                    SortedSet<string> allCValues = trees.Data[a][b];
+                                    var allCValues = childrenOfA[b];
 
                                     foreach (string c in allCValues) // for each c value (child of ab)
                                     {
-                                        SortedDictionary<string, SortedSet<string>> childrenOfC = trees.Data[c];
-                                        SortedDictionary<string, SortedSet<string>>.KeyCollection childrenOfCKeys = childrenOfC.Keys;
-
-                                        SortedSet<string> childrenOfDE = trees.Data[d][e];
-
+                                        var childrenOfC = trees[c];
+                                        var childrenOfCKeys = childrenOfC.Keys;
+                                        var childrenOfDE = childrenOfD[e];
                                         var AllFValues = childrenOfCKeys.Intersect(childrenOfDE);
 
                                         foreach (string f in AllFValues) //for each f value (child of c and de)
                                         {
-                                            SortedSet<string> childrenOfCF = trees.Data[c][f];
-                                            SortedSet<string> childrenOfGH = trees.Data[g][h];
-
+                                            var childrenOfCF = childrenOfC[f];
+                                            var childrenOfGH = childrenOfG[h];
                                             var allIValues = childrenOfCF.Intersect(childrenOfGH);
 
                                             foreach (string i in allIValues)
                                             {
                                                 string[] results = new[] {a,b,c,d,e,f,g,h,i};
-
                                                 var duplicates = results.GroupBy(s => s).Where(x => x.Count() > 1).Select(x => x.Key);
+
                                                 if (duplicates.Count()==0)
                                                 {
                                                     foreach (string str in results)

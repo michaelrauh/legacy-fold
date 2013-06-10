@@ -10,3 +10,9 @@ C:\Users\Owner\Desktop\fold\fold\obj\Debug\fold.pdb
 C:\Users\Owner\Desktop\fold\fold\bin\Debug\fold.exe
 C:\Users\Owner\Desktop\fold\fold\bin\Debug\fold.pdb
 C:\Users\Owner\Desktop\fold\fold\obj\Debug\fold.csprojResolveAssemblyReference.cache
+C:\Users\Owner\Documents\GitHub\fold\linearfold\fold\bin\Debug\fold.exe.config
+C:\Users\Owner\Documents\GitHub\fold\linearfold\fold\obj\Debug\fold.exe
+C:\Users\Owner\Documents\GitHub\fold\linearfold\fold\obj\Debug\fold.pdb
+C:\Users\Owner\Documents\GitHub\fold\linearfold\fold\bin\Debug\fold.exe
+C:\Users\Owner\Documents\GitHub\fold\linearfold\fold\bin\Debug\fold.pdb
+C:\Users\Owner\Documents\GitHub\fold\linearfold\fold\obj\Debug\fold.csprojResolveAssemblyReference.cache

@@ -18,10 +18,10 @@ namespace fold
         {
             get 
             {
-                if (string.IsNullOrEmpty(index))
+               /* if (string.IsNullOrEmpty(index))
                 {
-                    throw new ArgumentNullException("index");
-                }
+                    throw new ArgumentNullException("index"); // need to develop way to get rid of empties.As it is, it manifests as a blank in output
+                }*/
                 if (data.ContainsKey(index))
                 {
                 return data[index]; 
