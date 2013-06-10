@@ -1,0 +1,12 @@
+c:\users\owner\documents\visual studio 2012\Projects\fold\fold\bin\Debug\fold.exe.config
+c:\users\owner\documents\visual studio 2012\Projects\fold\fold\bin\Debug\fold.exe
+c:\users\owner\documents\visual studio 2012\Projects\fold\fold\bin\Debug\fold.pdb
+c:\users\owner\documents\visual studio 2012\Projects\fold\fold\obj\Debug\fold.csprojResolveAssemblyReference.cache
+c:\users\owner\documents\visual studio 2012\Projects\fold\fold\obj\Debug\fold.exe
+c:\users\owner\documents\visual studio 2012\Projects\fold\fold\obj\Debug\fold.pdb
+C:\Users\Owner\Desktop\fold\fold\bin\Debug\fold.exe.config
+C:\Users\Owner\Desktop\fold\fold\obj\Debug\fold.exe
+C:\Users\Owner\Desktop\fold\fold\obj\Debug\fold.pdb
+C:\Users\Owner\Desktop\fold\fold\bin\Debug\fold.exe
+C:\Users\Owner\Desktop\fold\fold\bin\Debug\fold.pdb
+C:\Users\Owner\Desktop\fold\fold\obj\Debug\fold.csprojResolveAssemblyReference.cache
