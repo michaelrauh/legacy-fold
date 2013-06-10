@@ -18,10 +18,10 @@ namespace fold
         {
             get 
             {
-                if (string.IsNullOrEmpty(index))
-                {
-                    throw new ArgumentNullException("index");
-                }
+              //  if (string.IsNullOrEmpty(index))
+              //  {
+               //    throw new ArgumentNullException("index");
+               // }
                 if (data.ContainsKey(index))
                 {
                 return data[index]; 
@@ -58,36 +58,36 @@ namespace fold
         public void load()
         {
             string[] words = System.IO.File.ReadAllText(@"C:\Users\Owner\Desktop\mars.txt").Replace('\n', ' ').Replace('\t', ' ').Split(' ');
-            for (int i = 0; i < words.Length; i++)
+            for (int i = 0; i < words.Length-2; i++)
             {
-                if (!data.ContainsKey(words[i])) // if the top is missing
+                string firstWord = words[i];
+                string secondWord = words[i + 1];
+                string thirdWord = words[i + 2];
+
+                if (!data.ContainsKey(firstWord)) // if the root is missing
                 {
-                    SortedSet<string> bottom = new SortedSet<string>();
-                    if (i + 2 < words.Length) // if boundary conditions fail a dummy is added to preserve structure
-                        bottom.Add(words[i + 2]);
+                    var bottom = new SortedSet<string>();
+                    var middle = new SortedDictionary<string, SortedSet<string>>();
 
-                    SortedDictionary<string, SortedSet<string>> middle = new SortedDictionary<string, SortedSet<string>>();
-                    if (i + 1 < words.Length)
-                        middle.Add(words[i + 1], bottom);
+                    bottom.Add(thirdWord);
+                    middle.Add(secondWord, bottom);
 
-                    data.Add(words[i], middle);
+                    data.Add(firstWord, middle);
                 }
                 else
                 {
-                    if (!data[words[i]].ContainsKey(words[i + 1])) //if the branch is missing
+                    if (!data[firstWord].ContainsKey(secondWord)) //if the branch is missing
                     {
-                        SortedSet<string> bottom = new SortedSet<string>();
-                        if (i + 2 < words.Length)
-                            bottom.Add(words[i + 2]);
+                        var bottom = new SortedSet<string>();
+                        bottom.Add(thirdWord);
 
-                        data[words[i]].Add(words[i + 1], bottom);
+                        data[firstWord].Add(secondWord, bottom);
                     }
                     else
                     {
-                        if (!data[words[i]][words[i + 1]].Contains(words[i + 2])) //if the leaf is missing
+                        if (!data[firstWord][secondWord].Contains(thirdWord)) //if the leaf is missing
                         {
-                            if (i+2 < words.Length)
-                            data[words[i]][words[i + 1]].Add(words[i + 2]);
+                            data[firstWord][secondWord].Add(thirdWord);
                         }
                     }
                 }
