@@ -89,20 +89,23 @@ namespace fold
                 var childrenOfDE = childrenOfD[e];
                 var AllFValues = childrenOfCKeys.Intersect(childrenOfDE);
 
-                getEighth(a, b, d, e, g, childrenOfG, h, c, childrenOfC, AllFValues);
+                System.Console.Out.Write( getEighth(a, b, d, e, g, childrenOfG, h, c, childrenOfC, AllFValues));
             }
         }
 
-        private static void getEighth(string a, string b, string d, string e, string g, SortedDictionary<string, SortedSet<string>> childrenOfG, string h, string c, SortedDictionary<string, SortedSet<string>> childrenOfC, IEnumerable<string> AllFValues)
+        private static string getEighth(string a, string b, string d, string e, string g, SortedDictionary<string, SortedSet<string>> childrenOfG, string h, string c, SortedDictionary<string, SortedSet<string>> childrenOfC, IEnumerable<string> AllFValues)
         {
+            var allResults = new List<string>();
             foreach (string f in AllFValues) //for each f value (child of c and de)
             {
                 var childrenOfCF = childrenOfC[f];
                 var childrenOfGH = childrenOfG[h];
                 var allIValues = childrenOfCF.Intersect(childrenOfGH);
 
-                var allResults = getNinth(a, b, d, e, g, h, c, f, allIValues);
+                allResults.Add(getNinth(a, b, d, e, g, h, c, f, allIValues));
             }
+            string allResultsString = string.Concat(allResults);
+            return allResultsString;
         }
 
         private static string getNinth(string a, string b, string d, string e, string g, string h, string c, string f, IEnumerable<string> allIValues)
@@ -110,7 +113,7 @@ namespace fold
             var allResults = new List<string>();
             foreach (string i in allIValues)
             {
-                string[] results = new[] { a, " ", b, " ", c, "\n", d, " ", e, " ", f, "\n", g, " ", h, " ", i, "\n" };
+                string[] results = new[] { a, " ", b, " ", c, "\n", d, " ", e, " ", f, "\n", g, " ", h, " ", i, "\n","\n" };
                 string result = string.Concat(results);
                 bool goodResult = (b != d && c != e && e != g && c != g && f != h);
 
@@ -118,7 +121,6 @@ namespace fold
                 {
                     allResults.Add(result);
                 }
-                
             }
             string allResultsString = string.Concat(allResults);
             return allResultsString;
