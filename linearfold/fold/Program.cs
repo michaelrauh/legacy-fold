@@ -20,20 +20,24 @@ namespace fold
                 string[] childrenOfAKeys = childrenOfA.Keys.ToArray<string>();
                 int childrenOfASize = childrenOfAKeys.Length;
 
-                getSecond(trees, a, childrenOfA, childrenOfAKeys, childrenOfASize);
+                System.Console.Out.Write (getSecond(trees, a, childrenOfA, childrenOfAKeys, childrenOfASize));
             }
         }
 
-        private static void getSecond(Trees trees, string a, SortedDictionary<string, SortedSet<string>> childrenOfA, string[] childrenOfAKeys, int childrenOfASize)
+        private static string getSecond(Trees trees, string a, SortedDictionary<string, SortedSet<string>> childrenOfA, string[] childrenOfAKeys, int childrenOfASize)
         {
+            var allResults = new List<string>();
             for (int currentB = 0; currentB < childrenOfASize; currentB++) // for each child of a (b)
             {
-                getThird(trees, a, childrenOfA, childrenOfAKeys, childrenOfASize, currentB);
+                allResults.Add(getThird(trees, a, childrenOfA, childrenOfAKeys, childrenOfASize, currentB));
             }
+            string allResultsString = string.Concat(allResults);
+            return allResultsString;
         }
 
-        private static void getThird(Trees trees, string a, SortedDictionary<string, SortedSet<string>> childrenOfA, string[] childrenOfAKeys, int childrenOfASize, int currentB)
+        private static string getThird(Trees trees, string a, SortedDictionary<string, SortedSet<string>> childrenOfA, string[] childrenOfAKeys, int childrenOfASize, int currentB)
         {
+            var allResults = new List<string>();
             for (int currentD = currentB; currentD < childrenOfASize; currentD++) //for each unused child of a (d)
             {
                 string b = childrenOfAKeys[currentB];
@@ -44,44 +48,57 @@ namespace fold
                 var childrenOfDKeys = childrenOfD.Keys;
                 var allEValues = childrenOfBKeys.Intersect(childrenOfDKeys);
 
-                getFourth(trees, a, childrenOfA, b, d, childrenOfB, childrenOfD, allEValues);
+                allResults.Add(getFourth(trees, a, childrenOfA, b, d, childrenOfB, childrenOfD, allEValues));
             }
+            string allResultsString = string.Concat(allResults);
+            return allResultsString;
         }
 
-        private static void getFourth(Trees trees, string a, SortedDictionary<string, SortedSet<string>> childrenOfA, string b, string d, SortedDictionary<string, SortedSet<string>> childrenOfB, SortedDictionary<string, SortedSet<string>> childrenOfD, IEnumerable<string> allEValues)
+        private static string getFourth(Trees trees, string a, SortedDictionary<string, SortedSet<string>> childrenOfA, string b, string d, SortedDictionary<string, SortedSet<string>> childrenOfB, SortedDictionary<string, SortedSet<string>> childrenOfD, IEnumerable<string> allEValues)
         {
+            var allResults = new List<string>();
             foreach (string e in allEValues) // for each e value (child of b and d)
             {
                 var allGValues = childrenOfA[d];
 
-                getFifth(trees, a, childrenOfA, b, d, childrenOfB, childrenOfD, e, allGValues);
+                allResults.Add(getFifth(trees, a, childrenOfA, b, d, childrenOfB, childrenOfD, e, allGValues));
             }
+            string allResultsString = string.Concat(allResults);
+            return allResultsString;
         }
 
-        private static void getFifth(Trees trees, string a, SortedDictionary<string, SortedSet<string>> childrenOfA, string b, string d, SortedDictionary<string, SortedSet<string>> childrenOfB, SortedDictionary<string, SortedSet<string>> childrenOfD, string e, SortedSet<string> allGValues)
+        private static string getFifth(Trees trees, string a, SortedDictionary<string, SortedSet<string>> childrenOfA, string b, string d, SortedDictionary<string, SortedSet<string>> childrenOfB, SortedDictionary<string, SortedSet<string>> childrenOfD, string e, SortedSet<string> allGValues)
         {
+            var allResults = new List<string>();
             foreach (string g in allGValues) // for each g value (child of ad)
             {
                 var childrenOfBE = childrenOfB[e];
                 var childrenOfG = trees[g];
                 var childrenOfGKeys = childrenOfG.Keys;
                 var allHValues = childrenOfGKeys.Intersect(childrenOfBE);
-                getSixth(trees, a, childrenOfA, b, d, childrenOfD, e, g, childrenOfG, allHValues);
+
+                allResults.Add(getSixth(trees, a, childrenOfA, b, d, childrenOfD, e, g, childrenOfG, allHValues));
             }
+            string allResultsString = string.Concat(allResults);
+            return allResultsString;
         }
 
-        private static void getSixth(Trees trees, string a, SortedDictionary<string, SortedSet<string>> childrenOfA, string b, string d, SortedDictionary<string, SortedSet<string>> childrenOfD, string e, string g, SortedDictionary<string, SortedSet<string>> childrenOfG, IEnumerable<string> allHValues)
+        private static string getSixth(Trees trees, string a, SortedDictionary<string, SortedSet<string>> childrenOfA, string b, string d, SortedDictionary<string, SortedSet<string>> childrenOfD, string e, string g, SortedDictionary<string, SortedSet<string>> childrenOfG, IEnumerable<string> allHValues)
         {
+            var allResults = new List<string>();
             foreach (string h in allHValues) //for each h value (child of be and g)
             {
                 var allCValues = childrenOfA[b];
 
-                getSeventh(trees, a, b, d, childrenOfD, e, g, childrenOfG, h, allCValues);
+                allResults.Add(getSeventh(trees, a, b, d, childrenOfD, e, g, childrenOfG, h, allCValues));
             }
+            string allResultsString = string.Concat(allResults);
+            return allResultsString;
         }
 
-        private static void getSeventh(Trees trees, string a, string b, string d, SortedDictionary<string, SortedSet<string>> childrenOfD, string e, string g, SortedDictionary<string, SortedSet<string>> childrenOfG, string h, SortedSet<string> allCValues)
+        private static string getSeventh(Trees trees, string a, string b, string d, SortedDictionary<string, SortedSet<string>> childrenOfD, string e, string g, SortedDictionary<string, SortedSet<string>> childrenOfG, string h, SortedSet<string> allCValues)
         {
+            var allResults = new List<string>();
             foreach (string c in allCValues) // for each c value (child of ab)
             {
                 var childrenOfC = trees[c];
@@ -89,8 +106,10 @@ namespace fold
                 var childrenOfDE = childrenOfD[e];
                 var AllFValues = childrenOfCKeys.Intersect(childrenOfDE);
 
-                System.Console.Out.Write( getEighth(a, b, d, e, g, childrenOfG, h, c, childrenOfC, AllFValues));
+                allResults.Add(getEighth(a, b, d, e, g, childrenOfG, h, c, childrenOfC, AllFValues));
             }
+            string allResultsString = string.Concat(allResults);
+            return allResultsString;
         }
 
         private static string getEighth(string a, string b, string d, string e, string g, SortedDictionary<string, SortedSet<string>> childrenOfG, string h, string c, SortedDictionary<string, SortedSet<string>> childrenOfC, IEnumerable<string> AllFValues)
