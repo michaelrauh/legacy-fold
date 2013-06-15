@@ -18,10 +18,10 @@ namespace fold
         {
             get 
             {
-              //  if (string.IsNullOrEmpty(index))
-              //  {
-               //    throw new ArgumentNullException("index");
-               // }
+                if (string.IsNullOrEmpty(index))
+                {
+                  // throw new ArgumentNullException("index");
+                }
                 if (data.ContainsKey(index))
                 {
                 return data[index]; 
@@ -56,19 +56,45 @@ namespace fold
             }
         }
         public void load()
-        {
-            string[] words = System.IO.File.ReadAllText(@"C:\Users\Owner\Desktop\mars.txt").Replace('\n', ' ').Replace('\t', ' ').Split(' ');
-            for (int i = 0; i < words.Length-2; i++)
+        {   
+            List<string> words = System.IO.File.ReadAllText(@"C:\Users\Owner\Desktop\mars.txt").Replace('\n', ' ').Replace('\t', ' ').Split(' ').ToList();
+            for (int index = 0; index < words.Count;index++ )
+            {
+                if (string.IsNullOrEmpty(words[index]))
+                {
+                    words.RemoveAt(index);
+                }
+            }
+            words.Add("");
+            for (int i = 0; i < words.Count; i++)
             {
                 string firstWord = words[i];
-                string secondWord = words[i + 1];
-                string thirdWord = words[i + 2];
+                string secondWord;
+                string thirdWord;
+
+                if (i + 2 < words.Count)
+                {
+                    secondWord = words[i + 1];
+                    thirdWord = words[i + 2];
+                }
+                else
+                {
+                    secondWord = "";
+                    thirdWord = "";
+                }
+                if (i + 1 < words.Count)
+                {
+                    secondWord = words[i + 1];
+                }
+                else
+                {
+                    secondWord = "";
+                }
 
                 if (!data.ContainsKey(firstWord)) // if the root is missing
                 {
                     var bottom = new SortedSet<string>();
                     var middle = new SortedDictionary<string, SortedSet<string>>();
-
                     bottom.Add(thirdWord);
                     middle.Add(secondWord, bottom);
 
