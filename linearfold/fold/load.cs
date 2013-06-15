@@ -57,10 +57,10 @@ namespace fold
         }
         public void load()
         {   
-            List<string> words = System.IO.File.ReadAllText(@"C:\Users\Owner\Desktop\mars.txt").Replace('\n', ' ').Replace('\t', ' ').Split(' ').ToList();
+            List<string> words = System.IO.File.ReadAllText(@"C:\Users\Owner\Desktop\mars2.txt").Replace('\n', ' ').Replace('\t', ' ').Split(' ').ToList();
             for (int index = 0; index < words.Count;index++ )
             {
-                if (string.IsNullOrEmpty(words[index]))
+                if (string.IsNullOrEmpty(words[index]) || string.IsNullOrWhiteSpace(words[index]))
                 {
                     words.RemoveAt(index);
                 }
