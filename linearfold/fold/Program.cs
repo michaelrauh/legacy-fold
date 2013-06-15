@@ -101,12 +101,13 @@ namespace fold
                 var childrenOfGH = childrenOfG[h];
                 var allIValues = childrenOfCF.Intersect(childrenOfGH);
 
-                getNinth(a, b, d, e, g, h, c, f, allIValues);
+                var allResults = getNinth(a, b, d, e, g, h, c, f, allIValues);
             }
         }
 
-        private static void getNinth(string a, string b, string d, string e, string g, string h, string c, string f, IEnumerable<string> allIValues)
+        private static string getNinth(string a, string b, string d, string e, string g, string h, string c, string f, IEnumerable<string> allIValues)
         {
+            var allResults = new List<string>();
             foreach (string i in allIValues)
             {
                 string[] results = new[] { a, " ", b, " ", c, "\n", d, " ", e, " ", f, "\n", g, " ", h, " ", i, "\n" };
@@ -115,9 +116,12 @@ namespace fold
 
                 if (goodResult)
                 {
-                    System.Console.WriteLine(result);
+                    allResults.Add(result);
                 }
+                
             }
+            string allResultsString = string.Concat(allResults);
+            return allResultsString;
         }
     }
 }
