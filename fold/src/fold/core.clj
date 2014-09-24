@@ -16,7 +16,6 @@
   [pred coll]
   (for [[idx elt] (indexed coll) :when (pred elt)] idx))
 
-(positions #{2} [1 2 3 4 1 2 3 4])
 
 (defn read-to-list
   "Take in filename and return list of words"
@@ -30,7 +29,14 @@
 
 (def x (read-to-list "resources/text.txt"))
 
-(positions #{"is"} x)
+(positions (hash-set "is") x)
+
+(defn x-positions
+  "currying the collection name out of the positions function"
+  [word]
+  (positions (hash-set word) x))
+
+(x-positions "is")
 
 (defn -main
   "I don't do a whole lot ... yet."
