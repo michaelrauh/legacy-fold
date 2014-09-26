@@ -2,6 +2,7 @@
   (:gen-class))
 (require '[clojure.string :as str])
 
+
 (defn indexed
   "Returns a lazy sequence of [index, item] pairs, where items come
   from 's' and indexes count up from zero. Taken from library
@@ -29,12 +30,34 @@
 
 (def x (read-to-list "resources/text.txt"))
 
+;positions of word "is"
 (positions (hash-set "is") x)
+
+; Positions of words after "is"
+(map inc(positions (hash-set "is") x))
+
+(nth x 0)
+
+(defn xnth
+  "Curry x out of nth"
+  [n]
+  (nth x n))
 
 (defn x-positions
   "Currying the collection name out of the positions function"
   [word]
   (positions (hash-set word) x))
+
+;Words after "is"
+(map xnth (map inc(positions (hash-set "is") x)))
+
+(defn next-word
+     [word]
+     (map xnth (map inc(positions (hash-set word) x))))
+
+;(def z (vec(map next-word (distinct x))))
+
+(def z(vec (map next-word (butlast (distinct x)))))
 
 ;Locations of the words
 (def y (vec(map x-positions (distinct x))))
@@ -42,10 +65,14 @@
 ;words mapped to their locations
 (zipmap x y)
 
-(defn xnth
-  "Curry x out of nth"
-  [n]
-  (nth x n))
+(zipmap x z)
+
+(defn next-word
+  "Find the word that comes after"
+  [word]
+  (let [all-positions (x-positions word)])
+  (nth )
+  )
 
 
 (defn -main
