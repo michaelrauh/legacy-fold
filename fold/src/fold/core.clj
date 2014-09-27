@@ -2,7 +2,6 @@
   (:gen-class))
 (require '[clojure.string :as str])
 
-
 (defn indexed
   "Returns a lazy sequence of [index, item] pairs, where items come
   from 's' and indexes count up from zero. Taken from library
@@ -23,59 +22,29 @@
   [filename]
   (str/split (slurp filename) #" "))
 
-(defn parse
-  "Take a list of words and return a foldable object. For now, print the words"
-  [words]
-  (pr words))
+(def words (read-to-list "resources/text.txt"))
 
-(def x (read-to-list "resources/text.txt"))
-
-;positions of word "is"
-(positions (hash-set "is") x)
-
-; Positions of words after "is"
-(map inc(positions (hash-set "is") x))
-
-(nth x 0)
-
-(defn xnth
-  "Curry x out of nth"
+(defn words-nth
+  "Curry words out of nth"
   [n]
-  (nth x n))
+  (nth words n))
 
-(defn x-positions
-  "Currying the collection name out of the positions function"
+(defn words-positions
+  "Curry the collection name out of the positions function"
   [word]
-  (positions (hash-set word) x))
-
-;Words after "is"
-(map xnth (map inc(positions (hash-set "is") x)))
+  (positions (hash-set word) words))
 
 (defn next-word
-     [word]
-     (map xnth (map inc(positions (hash-set word) x))))
-
-;(def z (vec(map next-word (distinct x))))
-
-(def z(vec (map next-word (butlast (distinct x)))))
-
-;Locations of the words
-(def y (vec(map x-positions (distinct x))))
-
-;words mapped to their locations
-(zipmap x y)
-
-(zipmap x z)
-
-(defn next-word
-  "Find the word that comes after"
   [word]
-  (let [all-positions (x-positions word)])
-  (nth )
-  )
+  (distinct (map words-nth (map inc(positions (hash-set word ) words)))))
+
+(def second-words(vec (map next-word (butlast (distinct words)))))
+
+
+(zipmap words second-words)
 
 
 (defn -main
-  "Calls parse on a hard-coded file for now"
+  "Currently printing data structure "
   [& args]
-  (parse (read-to-list "resources/text.txt")))
+  (pr (zipmap words second-words)))
