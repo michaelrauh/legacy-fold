@@ -1,6 +1,9 @@
 (ns fold.core
   (:gen-class))
 (require '[clojure.string :as str])
+(require '[clojure.math.combinatorics :as combo])
+
+(combo/combinations [1 2 3] 2)
 
 (defn indexed
   "Returns a lazy sequence of [index, item] pairs, where items come
@@ -40,11 +43,11 @@
 
 (def second-words(vec (map next-word (butlast (distinct words)))))
 
-
 (zipmap words second-words)
 
+(def roots (zipmap words second-words))
 
 (defn -main
-  "Currently printing data structure "
+  "Currently printing data structure"
   [& args]
-  (pr (zipmap words second-words)))
+  (pr roots))
