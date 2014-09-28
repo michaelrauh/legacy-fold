@@ -23,7 +23,7 @@
 (defn read-to-list
   "Take in filename and return list of words"
   [filename]
-  (str/split (slurp filename) #" "))
+  (str/split (slurp filename) #"\W+"))
 
 (def words (read-to-list "resources/text.txt"))
 
