@@ -33,7 +33,9 @@
   [word]
   (distinct (map words-nth (map inc(positions (hash-set word ) words)))))
 
-(def second-words (vec (map next-word (distinct (butlast words)))))
+(def second-words (vec (map next-word (butlast words))))
+
+second-words
 
 (zipmap words second-words)
 
@@ -44,7 +46,7 @@
   [word]
   (distinct (map sort (combo/cartesian-product (vec (roots word)) (vec (roots word))))))
 
-(leaves "Here")
+(leaves "here")
 
 (defn -main
   "Currently printing data structure"
