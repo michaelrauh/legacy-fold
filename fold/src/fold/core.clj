@@ -39,6 +39,13 @@
 
 (def roots (zipmap words second-words))
 
+(defn leaves
+  "Give all unique unordered cartesian products of mapped values given root"
+  [word]
+  (distinct (map sort (combo/cartesian-product (vec (roots word)) (vec (roots word))))))
+
+(leaves "Here")
+
 (defn -main
   "Currently printing data structure"
   [& args]
