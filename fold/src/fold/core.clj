@@ -76,6 +76,16 @@ second-words
 ;One example of finding the fourth word for hard-coded values. In this case, there is no intersection
 (clojure.set/intersection (into #{} (flatten (map roots (map first (branches "a"))))) (into #{} (flatten (map roots (map second (branches "is"))))))
 
+(defn find-fourth
+  [left right]
+  (clojure.set/intersection (into #{} (flatten (map roots (map first (branches left))))) (into #{} (flatten (map roots (map second (branches right)))))))
+
+(find-fourth "a" "is")
+
+(branches "is")
+
+(find-fourth (first (second (branches "is"))) (second (second (branches "is"))))
+
 (defn -main
   "Currently printing data structure"
   [& args]
