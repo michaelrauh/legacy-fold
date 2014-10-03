@@ -46,6 +46,8 @@ second-words
   [word]
   (distinct (map sort (combo/cartesian-product (vec (roots word)) (vec (roots word))))))
 
+(branches "is")
+
 (roots (first (first (branches "is"))))
 
 (roots (nth (first (branches "is")) 1))
@@ -55,6 +57,24 @@ second-words
 (take 2 (flatten (branches "is")))
 
 (hash-set (first (first (branches "is"))))
+
+;All "left hand" children of "is"
+(map first (branches "is"))
+
+;All "Right hand" children of "is"
+(defn second
+  [l]
+  (nth l 1))
+
+(map second (branches "is"))
+
+;Hash-sets containing possible values for the intersecting word (before-intersect)
+(into #{} (flatten (map roots (map second (branches "is")))))
+
+(into #{} (flatten (map roots (map first (branches "a")))))
+
+;One example of finding the fourth word for hard-coded values. In this case, there is no intersection
+(clojure.set/intersection (into #{} (flatten (map roots (map first (branches "a"))))) (into #{} (flatten (map roots (map second (branches "is"))))))
 
 (defn -main
   "Currently printing data structure"
