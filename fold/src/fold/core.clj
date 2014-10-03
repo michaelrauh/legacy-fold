@@ -41,12 +41,20 @@ second-words
 
 (def roots (zipmap words second-words))
 
-(defn leaves
+(defn branches
   "Give all unique unordered cartesian products of mapped values given root"
   [word]
   (distinct (map sort (combo/cartesian-product (vec (roots word)) (vec (roots word))))))
 
-(leaves "here")
+(roots (first (first (branches "is"))))
+
+(roots (nth (first (branches "is")) 1))
+
+(clojure.set/intersection #{1 2} #{1 3})
+
+(take 2 (flatten (branches "is")))
+
+(hash-set (first (first (branches "is"))))
 
 (defn -main
   "Currently printing data structure"
