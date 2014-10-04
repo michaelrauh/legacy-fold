@@ -80,11 +80,18 @@ second-words
   [left right]
   (clojure.set/intersection (into #{} (flatten (map roots (map first (branches left))))) (into #{} (flatten (map roots (map second (branches right)))))))
 
-(find-fourth "a" "is")
-
 (branches "is")
 
 (find-fourth (first (second (branches "is"))) (second (second (branches "is"))))
+
+;finding all intersections for "is"
+(map find-fourth (map first (branches "is")) (map second (branches "is")))
+
+(defn find-fourth-from-root
+  [word]
+  (map find-fourth (map first (branches word)) (map second (branches word))))
+
+(find-fourth-from-root "a")
 
 (defn -main
   "Currently printing data structure"
