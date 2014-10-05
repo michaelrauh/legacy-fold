@@ -93,6 +93,8 @@ second-words
 
 (find-fourth-from-root "a")
 
+(map find-fourth-from-root (distinct words))
+
 (defn -main
   "Currently printing data structure"
   [& args]
